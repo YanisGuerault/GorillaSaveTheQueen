@@ -11,6 +11,8 @@
         public GameObject player;
         private Vector3 offset;
 
+        private bool following = true;
+
         void Start()
         {
             m_InitPosition = transform.position;
@@ -20,30 +22,21 @@
         void ResetCamera()
 		{
 			m_Transform.position = m_InitPosition;
+            following = true;
 		}
 
 		protected override void Awake()
 		{
 			base.Awake();
 			m_Transform = transform;
-			m_InitPosition = m_Transform.position;
+			//m_InitPosition = m_Transform.position;
 		}
 
 		void Update()
 		{
-            //if (!GameManager.Instance.IsPlaying) return;
-           
-        }
-
-        void FixedUpdate()
-        {
-            if (transform.position.y > 0)
+            if (following)
             {
                 transform.position = new Vector3(m_InitPosition.x, player.transform.position.y + offset.y, player.transform.position.z + offset.z);
-            }
-            else
-            {
-                Debug.Log("CHUTE !");
             }
         }
 

@@ -1,122 +1,77 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SDD.Events;
 
-public class MovingScript : SimpleGameStateObserver, IEventHandler
+[RequireComponent(typeof(Rigidbody))]
+public class MovingScript : MonoBehaviour
 {
-
-    #region Physics gravity
     [SerializeField]
-    Vector3 m_LowGravity;
+    float m_TranslationSpeed;
     [SerializeField]
-    Vector3 m_HighGravity;
-    //Vector3 m_Gravity;
-    #endregion
-
-
-    private Rigidbody m_Rigidbody;
-    private Transform m_Transform;
-
+    float m_RotationSpeed;
     [SerializeField]
-    private float m_TranslationSpeed;
+    float m_JumpVerticalVelocity;
+
+    Rigidbody m_Rigidbody;
+
+    bool m_isGrownded = false;
     [SerializeField]
-    private float m_JumpImpulsionMagnitude;
+    LayerMask m_GroundedLayerMask;
 
-    private bool m_IsGrounded;
+    float m_NextJumpTime;
+    [SerializeField]
+    float m_JumpCoolDownDuration;
 
-
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
         m_Rigidbody = GetComponent<Rigidbody>();
-        m_Transform = GetComponent<Transform>();
     }
 
-    private void Reset()
-    {
-        m_Rigidbody.velocity = Vector3.zero;
-        m_Rigidbody.angularVelocity = Vector3.zero;
-    }
-
-    // Use this for initialization
+    // Start is called before the first frame update
     void Start()
     {
-        m_IsGrounded = false;
-        //m_Gravity = m_HighGravity;
+        m_NextJumpTime = Time.time;
     }
 
-    private void Update()
-    {
-        //bool fire = Input.GetAxis("Fire1") > 0;
-        ////Debug.Log("Fire = " + fire);
-        //m_Gravity = fire ? m_LowGravity : m_HighGravity;
-
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         float hInput = Input.GetAxis("Horizontal");
         float vInput = Input.GetAxis("Vertical");
-        bool jump = Input.GetAxis("Jump") > 0 || Input.GetKeyDown(KeyCode.Space);
-        bool fire = Input.GetAxis("Fire1") > 0;
+        bool jump = Input.GetButton("Jump");
 
-        //m_Rigidbody.rotation = Quaternion.AngleAxis(90 * Mathf.Sign(hInput), Vector3.up);
+        m_Rigidbody.MoveRotation(Quaternion.AngleAxis(hInput * m_RotationSpeed * Time.fixedDeltaTime, Vector3.up) * m_Rigidbody.rotation);
 
-        m_Rigidbody.MovePosition(m_Rigidbody.position + m_Transform.forward * m_TranslationSpeed * hInput * Time.fixedDeltaTime);
-
-        if (jump && m_IsGrounded)
+        if (m_isGrownded)
         {
-            Vector3 jumpForce = Vector3.up * m_JumpImpulsionMagnitude;
-            m_Rigidbody.AddForce(jumpForce, ForceMode.Impulse);
+            if (jump && Time.time > m_NextJumpTime)
+            {
+                m_Rigidbody.velocity += Vector3.up * m_JumpVerticalVelocity;
+                m_isGrownded = false;
+                m_NextJumpTime = Time.time + m_JumpCoolDownDuration;
+            }
+            else
+            {
+                m_Rigidbody.velocity = vInput * transform.forward * m_TranslationSpeed;
+            }
+            m_Rigidbody.angularVelocity = Vector3.zero;
         }
-
-        if (m_IsGrounded)
-        {
-            m_Rigidbody.velocity = Vector3.zero;
-        }
-
-        m_Rigidbody.angularVelocity = Vector3.zero;
-
-        Vector3 gravity = m_HighGravity;
-        if (fire && m_Rigidbody.velocity.y < 0) gravity = m_LowGravity;
-
-        m_Rigidbody.AddForce(gravity * m_Rigidbody.mass);
-
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground")
-            || collision.gameObject.CompareTag("Platform"))
+        if ((m_GroundedLayerMask.value & (1 << collision.gameObject.layer)) != 0)
         {
-            Vector3 colLocalPt = m_Transform.InverseTransformPoint(collision.contacts[0].point);
-
-            //Debug.LogError(Time.frameCount+" colLocalPt = " + colLocalPt+ "   colLocalPt.magnitude = "+ colLocalPt.magnitude);
-
-            if (colLocalPt.magnitude < .5f)
-                m_IsGrounded = true;
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") || Vector3.Distance(collision.contacts[0].point, transform.position) < .05f)
+                m_isGrownded = true;
         }
-
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground")
-            || collision.gameObject.CompareTag("Platform"))
+        if ((m_GroundedLayerMask.value & (1 << collision.gameObject.layer)) != 0)
         {
-            m_IsGrounded = false;
+            m_isGrownded = false;
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-    }
-
-    //Game state events
-    protected override void GameMenu(GameMenuEvent e)
-    {
-        Reset();
     }
 }
