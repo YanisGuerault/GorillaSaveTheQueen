@@ -9,9 +9,8 @@
 		Vector3 m_InitPosition;
 
         public GameObject player;
+        public GameObject ground;
         private Vector3 offset;
-
-        private bool following = true;
 
         void Start()
         {
@@ -22,7 +21,6 @@
         void ResetCamera()
 		{
 			m_Transform.position = m_InitPosition;
-            following = true;
 		}
 
 		protected override void Awake()
@@ -34,7 +32,7 @@
 
 		void Update()
 		{
-            if (following)
+            if (ground.transform.position.y <= player.transform.position.y)
             {
                 transform.position = new Vector3(m_InitPosition.x, player.transform.position.y + offset.y, player.transform.position.z + offset.z);
             }
@@ -42,7 +40,7 @@
 
 		protected override void GameMenu(GameMenuEvent e)
 		{
-			ResetCamera();
+            ResetCamera();
 		}
 	}
 }
