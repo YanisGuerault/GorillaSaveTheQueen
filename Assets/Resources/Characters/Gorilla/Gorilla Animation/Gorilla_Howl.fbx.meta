@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 458ee2d52baa7f14da4b5b5f9f26aed1
+guid: 1f841589196c9984d9f10dae2ff8f11b
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -176,12 +176,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: 0_Default
-    second: {fileID: 2100000, guid: d2326f9240ffb8e4cb05532a3d8d522a, type: 2}
+    second: {fileID: 2100000, guid: 21e2c3e3e75866e43ad84ee432850117, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Gorilla_Default
-    second: {fileID: 2100000, guid: 77faa5be20665f04da4f81197de56ee1, type: 2}
+    second: {fileID: 2100000, guid: 989f34a9e5e365245949253a00751377, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -200,7 +200,6 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
-    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
