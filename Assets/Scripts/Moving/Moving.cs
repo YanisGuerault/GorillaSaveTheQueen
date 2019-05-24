@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class Moving : MonoBehaviour
 {
@@ -8,7 +9,8 @@ public class Moving : MonoBehaviour
     {
         Tank,
         Direct,
-        TwoD
+        TwoDUp,
+        TwoDLeft
     }
 
     [SerializeField] private float m_moveSpeed = 2;
@@ -17,7 +19,7 @@ public class Moving : MonoBehaviour
     [SerializeField] private Animator m_animator;
     [SerializeField] private Rigidbody m_rigidBody;
 
-    [SerializeField] private ControlMode m_controlMode = ControlMode.TwoD;
+    [SerializeField] private ControlMode m_controlMode = ControlMode.TwoDLeft;
 
     private float m_currentV = 0;
     private float m_currentH = 0;
@@ -100,7 +102,7 @@ public class Moving : MonoBehaviour
         if (pickupButton && other.GetComponent<Bonus>())
         {
             PickupObject();
-            Destroy(other.gameObject);
+            StartCoroutine(CoroutinePickupObject(1.5f,other));
         }
     }
 
@@ -111,8 +113,14 @@ public class Moving : MonoBehaviour
         if (pickupButton && other.GetComponent<Bonus>())
         {
             PickupObject();
-            Destroy(other.gameObject);
+            StartCoroutine(CoroutinePickupObject(1.5f,other));
         }
+    }
+
+    private IEnumerator CoroutinePickupObject(float x,Collider other)
+    {
+            yield return new WaitForSeconds(x);
+            Destroy(other.gameObject);
     }
 
     void Update()
@@ -129,8 +137,12 @@ public class Moving : MonoBehaviour
                 TankUpdate();
                 break;
 
-            case ControlMode.TwoD:
-                TwoDUpdate();
+            case ControlMode.TwoDUp:
+                TwoDUpdate(Vector3.forward);
+                break;
+
+            case ControlMode.TwoDLeft:
+                TwoDUpdate(Vector3.left);
                 break;
 
             default:
@@ -204,7 +216,7 @@ public class Moving : MonoBehaviour
         JumpingAndLanding();
     }
 
-    private void TwoDUpdate()
+    private void TwoDUpdate(Vector3 vector)
     {
         float h = Input.GetAxis("Horizontal");
 
@@ -217,7 +229,7 @@ public class Moving : MonoBehaviour
 
         m_currentH = Mathf.Lerp(m_currentH, h, Time.deltaTime * m_interpolation);
 
-        Vector3 direction = Vector3.forward * m_currentH;
+        Vector3 direction = vector * m_currentH;
 
         float directionLength = direction.magnitude;
         direction.y = 0;

@@ -5,17 +5,13 @@
     public class CameraController : SimpleGameStateObserver
 	{
 		[SerializeField] Transform m_Target;
-		Transform m_Transform;
+        [SerializeField] Transform m_Ground;
+        Transform m_Transform;
 		Vector3 m_InitPosition;
-
-        public GameObject player;
-        public GameObject ground;
-        private Vector3 offset;
 
         void Start()
         {
-            m_InitPosition = transform.position;
-            offset = transform.position - player.transform.position;
+            m_InitPosition = transform.position - m_Target.position;
         }
 
         void ResetCamera()
@@ -32,9 +28,9 @@
 
 		void Update()
 		{
-            if (ground.transform.position.y <= player.transform.position.y)
+            if (m_Ground.position.y <= m_Target.position.y)
             {
-                transform.position = new Vector3(m_InitPosition.x, player.transform.position.y + offset.y, player.transform.position.z + offset.z);
+                transform.position = new Vector3(m_Target.position.x + m_InitPosition.x, m_Target.position.y + m_InitPosition.y, m_InitPosition.z);
             }
         }
 
