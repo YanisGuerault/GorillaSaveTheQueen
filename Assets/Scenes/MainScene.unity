@@ -112,12 +112,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!4 &320374312 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400458, guid: df55f6f2f7afd3d41bcc765458ee7a43,
-    type: 3}
-  m_PrefabInstance: {fileID: 846856690}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &356624818
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,7 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Target: {fileID: 737797208}
-  m_Ground: {fileID: 320374312}
+  m_Ground: {fileID: 846856753}
 --- !u!81 &356624820
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1009,6 +1003,12 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 4302852, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+--- !u!4 &846856753 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 402828, guid: df55f6f2f7afd3d41bcc765458ee7a43,
+    type: 3}
+  m_PrefabInstance: {fileID: 846856690}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1045233193
 GameObject:
   m_ObjectHideFlags: 0
