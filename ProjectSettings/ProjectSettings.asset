@@ -593,10 +593,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 2
-  cloudProjectId: af3dda04-5c11-4dda-b732-836fde311c06
+  cloudProjectId: 786eeae7-58b7-49ba-8b0f-723f394a6bb9
   framebufferDepthMemorylessMode: 0
   projectName: EmptyProject
-  organizationId: unity_c02bmay1g2msha
+  organizationId: blanquea
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
