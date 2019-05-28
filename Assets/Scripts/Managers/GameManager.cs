@@ -24,7 +24,10 @@ public class GameManager : Manager<GameManager>
 		public int NLives { get { return m_NLives; } }
 		void DecrementNLives(int decrement)
 		{
-			SetNLives(m_NLives - decrement);
+            if (m_NLives > 0)
+            {
+                SetNLives(m_NLives - decrement);
+            }
 		}
 
 		void SetNLives(int nLives)
@@ -177,7 +180,6 @@ public class GameManager : Manager<GameManager>
 
 		private void Play()
 		{
-        Debug.Log("CC");
 			InitNewGame();
 			SetTimeScale(1);
 			m_GameState = GameState.gamePlay;

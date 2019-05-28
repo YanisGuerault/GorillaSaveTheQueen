@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using SDD.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private bool double_jumping = false;
 
     private bool m_isGrounded;
+    private Transform m_Ground;
     private List<Collider> m_collisions = new List<Collider>();
 
     private void OnCollisionEnter(Collision collision)
@@ -57,6 +59,11 @@ public class PlayerController : MonoBehaviour
                 }
                 m_isGrounded = true;
             }
+        }
+
+        if (collision.gameObject.GetComponent<Enemy>())
+        {
+            EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
         }
     }
 
@@ -78,6 +85,7 @@ public class PlayerController : MonoBehaviour
             if (collision.gameObject.CompareTag("Ground"))
             {
                 m_Camera.setGround(collision.transform);
+                m_Ground = collision.transform;
             }
             if (!m_collisions.Contains(collision.collider))
             {
@@ -159,6 +167,11 @@ public class PlayerController : MonoBehaviour
         }
 
         m_wasGrounded = m_isGrounded;
+
+        if (m_Ground.position.y > transform.position.y)
+        {
+            EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
+        }
     }
 
     private void TankUpdate()
