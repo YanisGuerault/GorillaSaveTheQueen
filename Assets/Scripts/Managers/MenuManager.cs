@@ -1,11 +1,10 @@
 ﻿
-namespace STUDENT_NAME
-{
-	using System;
-	using System.Collections;
-	using System.Collections.Generic;
-	using UnityEngine;
-	using SDD.Events;
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using SDD.Events;
 
 	public class MenuManager : Manager<MenuManager>
 	{
@@ -125,7 +124,10 @@ namespace STUDENT_NAME
 		{
 			OpenPanel(m_PanelGameOver);
 		}
+
+        protected void GoToNextLEvel(GoToNextLevelEvent e)
+        {
+            OpenPanel(null);
+        }
 		#endregion
 	}
-
-}

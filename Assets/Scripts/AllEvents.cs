@@ -41,17 +41,47 @@ public class PlayButtonClickedEvent : SDD.Events.Event
 public class ResumeButtonClickedEvent : SDD.Events.Event
 {
 }
+
+public class NextLevelButtonClickedEvent : SDD.Events.Event
+{
+}
 public class MainMenuButtonClickedEvent : SDD.Events.Event
 {
 }
 
 public class QuitButtonClickedEvent : SDD.Events.Event
-{ }
+{
+}
 #endregion
 
 #region Score Event
 public class ScoreItemEvent : SDD.Events.Event
 {
 	public float eScore;
+}
+#endregion
+
+#region Enemy Event
+public class EnemyHasBeenDestroyedEvent : SDD.Events.Event
+{
+    //public Enemy eEnemy;
+    public bool eDestroyedByPlayer;
+}
+#endregion
+
+#region Game Manager Additional Event
+
+public class AskToGoToNextLevelEvent : SDD.Events.Event
+{
+}
+
+public class GoToNextLevelEvent : SDD.Events.Event
+{
+}
+#endregion
+
+#region
+public class PlayerHasBeenHitEvent: SDD.Events.Event
+{
 }
 #endregion
