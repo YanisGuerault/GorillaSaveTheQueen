@@ -1,16 +1,14 @@
-﻿namespace STUDENT_NAME
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
+using SDD.Events;
+using System.Linq;
+
+public enum GameState { gameMenu, gamePlay, gameNextLevel, gamePause, gameOver, gameVictory }
+
+public class GameManager : Manager<GameManager>
 {
-	using System.Collections;
-	using UnityEngine;
-	using UnityEngine.UI;
-	using System.Collections.Generic;
-	using SDD.Events;
-	using System.Linq;
-
-	public enum GameState { gameMenu, gamePlay, gameNextLevel, gamePause, gameOver, gameVictory }
-
-	public class GameManager : Manager<GameManager>
-	{
 		#region Game State
 		private GameState m_GameState;
 		public bool IsPlaying { get { return m_GameState == GameState.gamePlay; } }
@@ -91,6 +89,9 @@
 
 			//Score Item
 			EventManager.Instance.AddListener<ScoreItemEvent>(ScoreHasBeenGained);
+
+            //Player
+            EventManager.Instance.AddListener<PlayerHasBeenHitEvent>(PlayerHasBeenHit);
 		}
 
 		public override void UnsubscribeEvents()
@@ -106,7 +107,10 @@
 
 			//Score Item
 			EventManager.Instance.RemoveListener<ScoreItemEvent>(ScoreHasBeenGained);
-		}
+
+            //Player
+            EventManager.Instance.RemoveListener<PlayerHasBeenHitEvent>(PlayerHasBeenHit);
+    }
 		#endregion
 
 		#region Manager implementation
@@ -123,6 +127,7 @@
 		void InitNewGame(bool raiseStatsEvent = true)
 		{
 			SetScore(0);
+            SetNLives(m_NStartLives);
 		}
 		#endregion
 
@@ -172,11 +177,12 @@
 
 		private void Play()
 		{
+        Debug.Log("CC");
 			InitNewGame();
 			SetTimeScale(1);
 			m_GameState = GameState.gamePlay;
 
-			if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(Constants.GAMEPLAY_MUSIC);
+		    if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(Constants.GAMEPLAY_MUSIC);
 			EventManager.Instance.Raise(new GamePlayEvent());
 		}
 
@@ -205,7 +211,18 @@
 			EventManager.Instance.Raise(new GameOverEvent());
 			if(SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.GAMEOVER_SFX);
 		}
-		#endregion
-	}
+    #endregion
+
+    #region Callsbacks to events issued by Player
+    private void PlayerHasBeenHit(PlayerHasBeenHitEvent e)
+    {
+        DecrementNLives(1);
+
+        if(m_NStartLives >= 0)
+        {
+            Over();
+        }
+    }
+    #endregion
 }
 

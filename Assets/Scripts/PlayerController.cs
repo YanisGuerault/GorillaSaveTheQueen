@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections;
 
-public class Moving : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
 
     private enum ControlMode
@@ -16,6 +16,8 @@ public class Moving : MonoBehaviour
     [SerializeField] private float m_moveSpeed = 2;
     [SerializeField] private float m_turnSpeed = 200;
     [SerializeField] private float m_jumpForce = 4;
+    [SerializeField] private bool m_doubleJumpActive = false;
+
     [SerializeField] private Animator m_animator;
     [SerializeField] private Rigidbody m_rigidBody;
 
@@ -266,7 +268,7 @@ public class Moving : MonoBehaviour
             double_jumping = false;
         }
 
-        if (!m_isGrounded && Input.GetKey(KeyCode.Space) && jumping == true && double_jumping == false && jumpCooldownOver)
+        if (m_doubleJumpActive && !m_isGrounded && Input.GetKey(KeyCode.Space) && jumping == true && double_jumping == false && jumpCooldownOver)
         {
             m_jumpTimeStamp = Time.time;
             m_rigidBody.AddForce(Vector3.up * m_jumpForce, ForceMode.Impulse);
