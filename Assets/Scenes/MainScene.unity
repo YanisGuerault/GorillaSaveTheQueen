@@ -175,7 +175,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Target: {fileID: 737797208}
-  m_Ground: {fileID: 846856753}
 --- !u!81 &356624820
 AudioListener:
   m_ObjectHideFlags: 0
@@ -529,6 +528,11 @@ PrefabInstance:
       propertyPath: m_Text
       value: Quit
       objectReference: {fileID: 0}
+    - target: {fileID: 224486775672037042, guid: 2d4cc07e22d85374b8d15cd15f4e18e1,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -42
+      objectReference: {fileID: 0}
     - target: {fileID: 114669130523249078, guid: 2d4cc07e22d85374b8d15cd15f4e18e1,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -742,13 +746,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa5118fc89d89b3498fe4bcd927ab712, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSpeed: 2
+  m_moveSpeed: 15
   m_turnSpeed: 200
-  m_jumpForce: 4
+  m_jumpForce: 10
   m_doubleJumpActive: 0
   m_animator: {fileID: 737797204}
   m_rigidBody: {fileID: 737797205}
   m_controlMode: 3
+  m_Camera: {fileID: 356624819}
 --- !u!4 &737797208 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4549428611729446, guid: 0e74cf81e6fd82546b4797f71ceffb81,
@@ -767,6 +772,70 @@ PrefabInstance:
       value: "Sc\xE8ne Monde 1 (2)"
       objectReference: {fileID: 0}
     - target: {fileID: 102852, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 100446, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 100448, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 100450, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 100452, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 100454, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 102828, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 102830, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 102832, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 102834, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 102838, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 102840, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 102842, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 102844, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 102846, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 102848, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
+    - target: {fileID: 102850, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
       propertyPath: m_TagString
       value: Ground
       objectReference: {fileID: 0}
@@ -1248,12 +1317,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 4302852, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
---- !u!4 &846856753 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 402828, guid: df55f6f2f7afd3d41bcc765458ee7a43,
-    type: 3}
-  m_PrefabInstance: {fileID: 846856690}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &979507555
 GameObject:
   m_ObjectHideFlags: 0
