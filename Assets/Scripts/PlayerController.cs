@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private ControlMode m_controlMode = ControlMode.TwoDLeft;
 
+    [SerializeField] private CameraController m_Camera;
+
     private float m_currentV = 0;
     private float m_currentH = 0;
 
@@ -73,6 +75,10 @@ public class PlayerController : MonoBehaviour
         if (validSurfaceNormal)
         {
             m_isGrounded = true;
+            if (collision.gameObject.CompareTag("Ground"))
+            {
+                m_Camera.setGround(collision.transform);
+            }
             if (!m_collisions.Contains(collision.collider))
             {
                 m_collisions.Add(collision.collider);
