@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
 
     private bool m_isGrounded;
     private Transform m_Ground;
+
     private List<Collider> m_collisions = new List<Collider>();
 
     private void OnCollisionEnter(Collision collision)
@@ -61,7 +62,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.GetComponent<Enemy>())
+       if (collision.gameObject.GetComponent<Enemy>())
         {
             EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
         }
@@ -82,6 +83,7 @@ public class PlayerController : MonoBehaviour
         if (validSurfaceNormal)
         {
             m_isGrounded = true;
+
             if (collision.gameObject.CompareTag("Ground"))
             {
                 m_Camera.setGround(collision.transform);
@@ -91,6 +93,7 @@ public class PlayerController : MonoBehaviour
             {
                 m_collisions.Add(collision.collider);
             }
+
         }
         else
         {
@@ -167,11 +170,6 @@ public class PlayerController : MonoBehaviour
         }
 
         m_wasGrounded = m_isGrounded;
-
-        if (m_Ground.position.y > transform.position.y)
-        {
-            EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
-        }
     }
 
     private void TankUpdate()
@@ -279,6 +277,8 @@ public class PlayerController : MonoBehaviour
     {
         bool jumpCooldownOver = (Time.time - m_jumpTimeStamp) >= m_minJumpInterval;
 
+        Debug.Log(m_isGrounded + "  " + m_wasGrounded);
+
         if (jumpCooldownOver && m_isGrounded && Input.GetKey(KeyCode.Space))
         {
             m_jumpTimeStamp = Time.time;
@@ -304,6 +304,11 @@ public class PlayerController : MonoBehaviour
         if (!m_isGrounded && m_wasGrounded)
         {
             m_animator.SetTrigger("Jump");
+        }
+
+        if(transform.position.y < m_Ground.position.y-10)
+        {
+            EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
         }
     }
 

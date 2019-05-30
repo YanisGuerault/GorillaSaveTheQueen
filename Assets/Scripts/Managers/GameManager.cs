@@ -176,7 +176,8 @@ public class GameManager : Manager<GameManager>
 			m_GameState = GameState.gameMenu;
 			if(MusicLoopsManager.Instance)MusicLoopsManager.Instance.PlayMusic(Constants.MENU_MUSIC);
 			EventManager.Instance.Raise(new GameMenuEvent());
-		}
+            GameObject.Find("Player").transform.position = GameObject.Find("SpawnPoint").transform.position;
+        }
 
 		private void Play()
 		{
