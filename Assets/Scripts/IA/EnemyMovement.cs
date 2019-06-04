@@ -16,9 +16,14 @@ public class EnemyMovement : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+
+    }
+
+
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log("JE TE VOIS !");
         if (other.CompareTag("Player"))
         {
             nav.SetDestination(player.position);

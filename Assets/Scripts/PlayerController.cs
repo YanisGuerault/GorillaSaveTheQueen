@@ -103,6 +103,14 @@ public class PlayerController : MonoBehaviour
             }
             if (m_collisions.Count == 0) { m_isGrounded = false; }
         }
+
+        bool pickupButton = Input.GetButton("Fire1") ? true : false;
+
+        if (pickupButton && collision.gameObject.GetComponent<Bonus>())
+        {
+            PickupObject();
+            StartCoroutine(CoroutinePickupObject(1.5f, collision.gameObject));
+        }
     }
 
     private void OnCollisionExit(Collision collision)
@@ -114,7 +122,7 @@ public class PlayerController : MonoBehaviour
         if (m_collisions.Count == 0) { m_isGrounded = false; }
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         bool pickupButton = Input.GetButton("Fire1") ? true : false;
 
@@ -134,12 +142,13 @@ public class PlayerController : MonoBehaviour
             PickupObject();
             StartCoroutine(CoroutinePickupObject(1.5f,other));
         }
-    }
+    }*/
 
-    private IEnumerator CoroutinePickupObject(float x,Collider other)
+    private IEnumerator CoroutinePickupObject(float x,GameObject other)
     {
             yield return new WaitForSeconds(x);
             Destroy(other.gameObject);
+            EventManager.Instance.Raise(new PlayerGetABonus());
     }
 
     void Update()
@@ -276,8 +285,6 @@ public class PlayerController : MonoBehaviour
     private void JumpingAndLanding()
     {
         bool jumpCooldownOver = (Time.time - m_jumpTimeStamp) >= m_minJumpInterval;
-
-        Debug.Log(m_isGrounded + "  " + m_wasGrounded);
 
         if (jumpCooldownOver && m_isGrounded && Input.GetKey(KeyCode.Space))
         {

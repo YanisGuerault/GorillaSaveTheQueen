@@ -11,7 +11,6 @@ using SDD.Events;
         #region Labels & Values
         [Header("Texts")]
 
-        [SerializeField] private Text m_TxtBestScore;
         [SerializeField] private Text m_TxtScore;
         [SerializeField] private Text m_TxtNLives;
 
@@ -27,7 +26,6 @@ using SDD.Events;
 		#region Callbacks to GameManager events
 		protected override void GameStatisticsChanged(GameStatisticsChangedEvent e)
 		{
-            m_TxtBestScore.text = e.eBestScore.ToString();
             m_TxtScore.text = e.eScore.ToString();
             m_TxtNLives.text = e.eNLives.ToString();
 

@@ -8,12 +8,11 @@ public class CaseBonus : MonoBehaviour
     private bool m_activated = false;
     private void OnCollisionEnter(Collision collision)
     {
-        if(!m_activated && collision.gameObject.GetComponent<PlayerController>())
+        if(!m_activated && collision.gameObject.CompareTag("Player"))
         {
             m_activated = true;
             foreach(Transform child in transform)
             {
-                Debug.Log(child.name);
                 if(child.name == "BonusSpawnPoint")
                 {
                     Instantiate(m_Bonus,child.position,child.rotation);
