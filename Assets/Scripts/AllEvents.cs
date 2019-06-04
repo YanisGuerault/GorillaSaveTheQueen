@@ -80,8 +80,13 @@ public class GoToNextLevelEvent : SDD.Events.Event
 }
 #endregion
 
-#region
+#region Player Event
 public class PlayerHasBeenHitEvent: SDD.Events.Event
 {
+}
+
+public class PlayerGetABonus: SDD.Events.Event
+{
+    public Bonus bonus;
 }
 #endregion

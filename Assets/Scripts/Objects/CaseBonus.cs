@@ -11,9 +11,14 @@ public class CaseBonus : MonoBehaviour
         if(!m_activated && collision.gameObject.GetComponent<PlayerController>())
         {
             m_activated = true;
-            Vector3 pos = transform.position + new Vector3(0,0.5f,-0.3f);
-            Quaternion rot = Quaternion.Euler(0, 0, 0);
-            Instantiate(m_Bonus, pos,rot);
+            foreach(Transform child in transform)
+            {
+                Debug.Log(child.name);
+                if(child.name == "BonusSpawnPoint")
+                {
+                    Instantiate(m_Bonus,child.position,child.rotation);
+                }
+            }
             
         }
     }

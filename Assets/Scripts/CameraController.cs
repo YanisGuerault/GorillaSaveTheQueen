@@ -15,7 +15,7 @@
 
         public void setGround(Transform ground)
         {
-        m_Ground = ground;
+            m_Ground = ground;
         }
 
         void ResetCamera()
