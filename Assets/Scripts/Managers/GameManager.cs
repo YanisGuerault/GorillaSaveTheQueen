@@ -9,69 +9,89 @@ public enum GameState { gameMenu, gamePlay, gameNextLevel, gamePause, gameOver, 
 
 public class GameManager : Manager<GameManager>
 {
-		#region Game State
-		private GameState m_GameState;
-		public bool IsPlaying { get { return m_GameState == GameState.gamePlay; } }
-		#endregion
+    #region Game State
+    private GameState m_GameState;
+    public bool IsPlaying { get { return m_GameState == GameState.gamePlay; } }
+    #endregion
 
-		//LIVES
-		#region Lives
-		[Header("GameManager")]
-		[SerializeField]
-		private int m_NStartLives;
+    //LIVES
+    #region Lives
+    [Header("GameManager")]
+    [SerializeField]
+    private int m_NStartLives;
 
-		private int m_NLives;
-		public int NLives { get { return m_NLives; } }
-		void DecrementNLives(int decrement)
-		{
-            if (m_NLives > 0)
-            {
-                SetNLives(m_NLives - decrement);
-            }
-		}
+    private int m_NLives;
+    public int NLives { get { return m_NLives; } }
+    void DecrementNLives(int decrement)
+    {
+        if (m_NLives > 0)
+        {
+            SetNLives(m_NLives - decrement);
+        }
+    }
 
-		void SetNLives(int nLives)
-		{
-			m_NLives = nLives;
-			EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives});
-		}
-		#endregion
+    void SetNLives(int nLives)
+    {
+        m_NLives = nLives;
+        EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_bonus });
+    }
+    #endregion
 
 
-		#region Score
-		private float m_Score;
-		public float Score
-		{
-			get { return m_Score; }
-			set
-			{
-				m_Score = value;
-				BestScore = Mathf.Max(BestScore, value);
-			}
-		}
+    #region Score
+    private float m_Score;
+    public float Score
+    {
+        get { return m_Score; }
+        set
+        {
+            m_Score = value;
+            BestScore = Mathf.Max(BestScore, value);
+        }
+    }
 
-		public float BestScore
-		{
-			get { return PlayerPrefs.GetFloat("BEST_SCORE", 0); }
-			set { PlayerPrefs.SetFloat("BEST_SCORE", value); }
-		}
+    public float BestScore
+    {
+        get { return PlayerPrefs.GetFloat("BEST_SCORE", 0); }
+        set { PlayerPrefs.SetFloat("BEST_SCORE", value); }
+    }
 
-		void IncrementScore(float increment)
-		{
-			SetScore(m_Score + increment);
-		}
+    void IncrementScore(float increment)
+    {
+        SetScore(m_Score + increment);
+    }
 
-		void SetScore(float score, bool raiseEvent = true)
-		{
-			Score = score;
+    void SetScore(float score, bool raiseEvent = true)
+    {
+        Score = score;
 
-			if (raiseEvent)
-				EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives });
-		}
-		#endregion
+        if (raiseEvent)
+            EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_bonus });
+    }
+    #endregion
 
-		#region Time
-		void SetTimeScale(float newTimeScale)
+    #region Bonus
+    private List<Bonus> m_bonus = new List<Bonus>();
+
+    public List<Bonus> getBonusList()
+    {
+        return m_bonus;
+    }
+
+    public void AddABonus(Bonus bonus)
+    {
+        m_bonus.Add(bonus);
+        EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_bonus });
+    }
+
+    public void removeABonus(Bonus bonus)
+    {
+        m_bonus.Remove(bonus);
+    }
+    #endregion
+
+    #region Time
+    void SetTimeScale(float newTimeScale)
 		{
 			Time.timeScale = newTimeScale;
 		}
@@ -95,6 +115,7 @@ public class GameManager : Manager<GameManager>
 
             //Player
             EventManager.Instance.AddListener<PlayerHasBeenHitEvent>(PlayerHasBeenHit);
+            EventManager.Instance.AddListener<PlayerGetABonus>(PlayerGetABonus);
 		}
 
 		public override void UnsubscribeEvents()
@@ -220,11 +241,17 @@ public class GameManager : Manager<GameManager>
     private void PlayerHasBeenHit(PlayerHasBeenHitEvent e)
     {
         DecrementNLives(1);
+        Debug.Log(m_NLives);
 
-        if(m_NStartLives >= 0)
+        if(m_NLives <= 0)
         {
             Over();
         }
+    }
+
+    private void PlayerGetABonus(PlayerGetABonus e)
+    {
+        AddABonus(e.bonus);
     }
     #endregion
 }

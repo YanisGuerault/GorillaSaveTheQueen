@@ -61,11 +61,6 @@ public class PlayerController : MonoBehaviour
                 m_isGrounded = true;
             }
         }
-
-       if (collision.gameObject.GetComponent<Enemy>())
-        {
-            EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
-        }
     }
 
     private void OnCollisionStay(Collision collision)
@@ -108,8 +103,7 @@ public class PlayerController : MonoBehaviour
 
         if (pickupButton && collision.gameObject.GetComponent<Bonus>())
         {
-            PickupObject();
-            StartCoroutine(CoroutinePickupObject(1.5f, collision.gameObject));
+            PickupObject(collision.gameObject);
         }
     }
 
@@ -122,14 +116,13 @@ public class PlayerController : MonoBehaviour
         if (m_collisions.Count == 0) { m_isGrounded = false; }
     }
 
-    /*private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         bool pickupButton = Input.GetButton("Fire1") ? true : false;
 
         if (pickupButton && other.GetComponent<Bonus>())
         {
-            PickupObject();
-            StartCoroutine(CoroutinePickupObject(1.5f,other));
+            PickupObject(other.gameObject);
         }
     }
 
@@ -139,16 +132,15 @@ public class PlayerController : MonoBehaviour
 
         if (pickupButton && other.GetComponent<Bonus>())
         {
-            PickupObject();
-            StartCoroutine(CoroutinePickupObject(1.5f,other));
+            PickupObject(other.gameObject);
         }
-    }*/
+    }
 
     private IEnumerator CoroutinePickupObject(float x,GameObject other)
     {
-            yield return new WaitForSeconds(x);
-            Destroy(other.gameObject);
-            EventManager.Instance.Raise(new PlayerGetABonus());
+        yield return new WaitForSeconds(x);
+        EventManager.Instance.Raise(new PlayerGetABonus() { bonus = other.GetComponent<Bonus>() });
+        Destroy(other);
     }
 
     void Update()
@@ -277,9 +269,10 @@ public class PlayerController : MonoBehaviour
         JumpingAndLanding();
     }
 
-    private void PickupObject()
+    private void PickupObject(GameObject gameobject)
     {
         m_animator.SetTrigger("Pickup");
+        StartCoroutine(CoroutinePickupObject(1.5f, gameobject));
     }
 
     private void JumpingAndLanding()

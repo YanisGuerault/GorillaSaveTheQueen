@@ -28,6 +28,7 @@ public class GameStatisticsChangedEvent : SDD.Events.Event
 	public float eBestScore { get; set; }
 	public float eScore { get; set; }
 	public int eNLives { get; set; }
+    public List<Bonus> eBonus { get; set; }
 }
 #endregion
 

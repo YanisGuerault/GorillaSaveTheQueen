@@ -9,9 +9,8 @@ public class Bonus : MonoBehaviour
     void Start()
     {
         rg = this.GetComponent<Rigidbody>();
-        Debug.Log(rg);
         rg.AddForce(Vector3.up * 200+Vector3.left*150);
-        StartCoroutine(CoroutineFreezeObject(1.5f));
+        StartCoroutine(CoroutineFreezeObject(2f));
     }
 
     private IEnumerator CoroutineFreezeObject(float x)
@@ -23,6 +22,5 @@ public class Bonus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 }

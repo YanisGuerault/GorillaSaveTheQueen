@@ -11,22 +11,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.8
+  m_Radius: 1.2
   m_Center: {x: 0, y: 0.8, z: 0}
---- !u!136 &1015649336943653057
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1080727394107014339}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 1.2816556
-  m_Height: 14.295769
-  m_Direction: 2
-  m_Center: {x: 0, y: 1.0914702, z: 2.944828}
 --- !u!195 &409081071
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -36,7 +22,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1080727394107014339}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.3
+  m_Radius: 0.7
   m_Speed: 0.3
   m_Acceleration: 8
   avoidancePriority: 50
