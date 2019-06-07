@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using SDD.Events;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bonus : MonoBehaviour
+public abstract class Bonus : MonoBehaviour
 {
     Rigidbody rg;
     // Start is called before the first frame update
@@ -22,5 +23,14 @@ public class Bonus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            EventManager.Instance.Raise(new PlayerGetABonus() { bonus = this });
+            Destroy(this.gameObject);
+        }
     }
 }

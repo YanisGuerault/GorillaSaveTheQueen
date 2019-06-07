@@ -81,6 +81,7 @@ public class GameManager : Manager<GameManager>
     public void AddABonus(Bonus bonus)
     {
         m_bonus.Add(bonus);
+        Debug.Log(bonus);
         EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_bonus });
     }
 
@@ -113,10 +114,16 @@ public class GameManager : Manager<GameManager>
 			//Score Item
 			EventManager.Instance.AddListener<ScoreItemEvent>(ScoreHasBeenGained);
 
+            //Victory
+            EventManager.Instance.AddListener<GameVictoryEvent>(WinEvent);
+
             //Player
             EventManager.Instance.AddListener<PlayerHasBeenHitEvent>(PlayerHasBeenHit);
             EventManager.Instance.AddListener<PlayerGetABonus>(PlayerGetABonus);
-		}
+
+            //Enemy
+            EventManager.Instance.AddListener<EnemyHasBeenDestroyEvent>(enemyDestroy);
+    }
 
 		public override void UnsubscribeEvents()
 		{
@@ -134,6 +141,14 @@ public class GameManager : Manager<GameManager>
 
             //Player
             EventManager.Instance.RemoveListener<PlayerHasBeenHitEvent>(PlayerHasBeenHit);
+            EventManager.Instance.RemoveListener<PlayerGetABonus>(PlayerGetABonus);
+
+            //Enemy
+            EventManager.Instance.RemoveListener<EnemyHasBeenDestroyEvent>(enemyDestroy);
+
+            //Victory
+            EventManager.Instance.RemoveListener<GameVictoryEvent>(WinEvent);
+
     }
 		#endregion
 
@@ -197,7 +212,7 @@ public class GameManager : Manager<GameManager>
 			m_GameState = GameState.gameMenu;
 			if(MusicLoopsManager.Instance)MusicLoopsManager.Instance.PlayMusic(Constants.MENU_MUSIC);
 			EventManager.Instance.Raise(new GameMenuEvent());
-            GameObject.Find("Player").transform.position = GameObject.Find("SpawnPoint").transform.position;
+            GameObject.Find("Player").transform.position = GameObject.Find("Level_1_Spawn_Point").transform.position;
         }
 
 		private void Play()
@@ -235,6 +250,13 @@ public class GameManager : Manager<GameManager>
 			EventManager.Instance.Raise(new GameOverEvent());
 			if(SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.GAMEOVER_SFX);
 		}
+
+        private void Win()
+        {
+        Debug.Log("Bonsoir");
+            m_GameState = GameState.gameVictory;
+            //if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.MENU_MUSIC);
+    }
     #endregion
 
     #region Callsbacks to events issued by Player
@@ -252,6 +274,21 @@ public class GameManager : Manager<GameManager>
     private void PlayerGetABonus(PlayerGetABonus e)
     {
         AddABonus(e.bonus);
+    }
+    #endregion
+
+    #region Callsbacks to events issued by Enemy
+    private void enemyDestroy(EnemyHasBeenDestroyEvent e)
+    {
+
+    }
+    #endregion
+
+    #region Callsbacks to events issued by Win
+    private void WinEvent(GameVictoryEvent e)
+    {
+        Debug.Log("RECEIVD");
+        Win();
     }
     #endregion
 }

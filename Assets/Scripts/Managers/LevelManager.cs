@@ -16,13 +16,13 @@ using SDD.Events;
 		public override void SubscribeEvents()
 		{
 			base.SubscribeEvents();
-            //EventManager.Instance.AddListener<AskToGoToNextLevelEvent>(GoToNextLevel);
+            EventManager.Instance.AddListener<GoToNextLevelEvent>(GoToNextLevel);
 		}
 
 		public override void UnsubscribeEvents()
 		{
 			base.UnsubscribeEvents();
-            //EventManager.Instance.RemoveListener<AskToGoToNextLevelEvent>(GoToNextLevel);
+            EventManager.Instance.RemoveListener<GoToNextLevelEvent>(GoToNextLevel);
         }
 
 		protected override void GamePlay(GamePlayEvent e)
@@ -36,6 +36,7 @@ using SDD.Events;
         #region Callbacks to GameManager events
         public void GoToNextLevel(GoToNextLevelEvent e)
         {
+
         }
         #endregion
     }

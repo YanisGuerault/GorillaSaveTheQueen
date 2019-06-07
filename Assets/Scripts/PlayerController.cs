@@ -99,12 +99,12 @@ public class PlayerController : MonoBehaviour
             if (m_collisions.Count == 0) { m_isGrounded = false; }
         }
 
-        bool pickupButton = Input.GetButton("Fire1") ? true : false;
+        /*bool pickupButton = Input.GetButton("Fire1") ? true : false;
 
         if (pickupButton && collision.gameObject.GetComponent<Bonus>())
         {
             PickupObject(collision.gameObject);
-        }
+        }*/
     }
 
     private void OnCollisionExit(Collision collision)
@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
         if (m_collisions.Count == 0) { m_isGrounded = false; }
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         bool pickupButton = Input.GetButton("Fire1") ? true : false;
 
@@ -134,7 +134,7 @@ public class PlayerController : MonoBehaviour
         {
             PickupObject(other.gameObject);
         }
-    }
+    }*/
 
     private IEnumerator CoroutinePickupObject(float x,GameObject other)
     {

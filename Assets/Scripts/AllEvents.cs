@@ -63,10 +63,9 @@ public class ScoreItemEvent : SDD.Events.Event
 #endregion
 
 #region Enemy Event
-public class EnemyHasBeenDestroyedEvent : SDD.Events.Event
+public class EnemyHasBeenDestroyEvent : SDD.Events.Event
 {
-    //public Enemy eEnemy;
-    public bool eDestroyedByPlayer;
+    public Enemy eEnemy;
 }
 #endregion
 

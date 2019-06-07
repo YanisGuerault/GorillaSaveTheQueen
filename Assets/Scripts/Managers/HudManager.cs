@@ -26,7 +26,6 @@ using SDD.Events;
 		#region Callbacks to GameManager events
 		protected override void GameStatisticsChanged(GameStatisticsChangedEvent e)
 		{
-        Debug.Log(e.eBonus);
             m_TxtScore.text = e.eBonus.Count.ToString();
             m_TxtNLives.text = e.eNLives.ToString();
 

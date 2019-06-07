@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyMovement : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     private Transform m_player;
     private NavMeshAgent m_nav;
     private Animator m_anim;
     private bool m_hit = false;
+    private Transform m_Ground;
+    private List<Collider> m_collisions = new List<Collider>();
 
     private void Awake()
     {
@@ -22,11 +24,11 @@ public class EnemyMovement : MonoBehaviour
     private void Update()
     {
         m_player = GameObject.FindGameObjectWithTag("Player").transform;
-        /*Debug.Log("Distance : "+Vector3.Distance(this.transform.position, player.position));
-        Debug.Log("Angle : " + Vector3.SignedAngle(player.position - transform.position, transform.forward,Vector3.up));*/
-        if (Vector3.SignedAngle(m_player.position - transform.position, transform.forward, Vector3.up) < 70 
-            && Vector3.SignedAngle(m_player.position - transform.position, transform.forward, Vector3.up) > -70 
-            && Vector3.Distance(this.transform.position, m_player.position) < 15)
+        float angleVision = Vector3.SignedAngle(m_player.position - transform.position, transform.forward, Vector3.up);
+        float distanceWithPlayer = Vector3.Distance(this.transform.position, m_player.position);
+        //Debug.Log("Distance : " + distanceWithPlayer + " angle : "+angleVision);
+        if ((angleVision < 70 && angleVision > -70 && distanceWithPlayer < 15) 
+            || ((angleVision > 70 && angleVision < 180) || (angleVision < -70 && angleVision > -180) && distanceWithPlayer < 5))
         {
             if (!m_anim.GetCurrentAnimatorStateInfo(0).IsName("zombie_attack"))
             {
@@ -38,6 +40,11 @@ public class EnemyMovement : MonoBehaviour
         else
         {
             m_anim.SetBool("SeePlayer", false);
+        }
+
+        if (transform.position.y < m_Ground.position.y - 10)
+        {
+            EventManager.Instance.Raise(new EnemyHasBeenDestroyEvent() { eEnemy = this });
         }
     }
 
@@ -53,6 +60,36 @@ public class EnemyMovement : MonoBehaviour
             EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
             m_hit = true;
             StartCoroutine(CoroutineHitPlayer(2));
+        }
+
+        ContactPoint[] contactPoints = collision.contacts;
+        bool validSurfaceNormal = false;
+        for (int i = 0; i < contactPoints.Length; i++)
+        {
+            if (Vector3.Dot(contactPoints[i].normal, Vector3.up) > 0.5f)
+            {
+                validSurfaceNormal = true; break;
+            }
+        }
+
+        if (validSurfaceNormal)
+        {
+            if (collision.gameObject.CompareTag("Ground"))
+            {
+                m_Ground = collision.transform;
+            }
+            if (!m_collisions.Contains(collision.collider))
+            {
+                m_collisions.Add(collision.collider);
+            }
+
+        }
+        else
+        {
+            if (m_collisions.Contains(collision.collider))
+            {
+                m_collisions.Remove(collision.collider);
+            }
         }
     }
 
