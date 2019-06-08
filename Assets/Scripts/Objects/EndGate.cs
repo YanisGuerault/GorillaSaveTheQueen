@@ -9,8 +9,7 @@ public class EndGate : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
-            Debug.Log("LOOOOOOLLLLLs");
+            EventManager.Instance.Raise(new AskToGoToNextLevelEvent());
         }
     }
 }

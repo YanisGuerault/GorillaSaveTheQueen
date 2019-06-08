@@ -10,8 +10,12 @@ public enum GameState { gameMenu, gamePlay, gameNextLevel, gamePause, gameOver, 
 public class GameManager : Manager<GameManager>
 {
     #region Game State
+    [SerializeField] private GameObject m_prefabPlayer;
+    [SerializeField] private CameraController m_cameraController;
+    private GameObject m_player;
     private GameState m_GameState;
     public bool IsPlaying { get { return m_GameState == GameState.gamePlay; } }
+    private Level m_currentLevel;
     #endregion
 
     //LIVES
@@ -110,9 +114,10 @@ public class GameManager : Manager<GameManager>
 			EventManager.Instance.AddListener<ResumeButtonClickedEvent>(ResumeButtonClicked);
 			EventManager.Instance.AddListener<EscapeButtonClickedEvent>(EscapeButtonClicked);
 			EventManager.Instance.AddListener<QuitButtonClickedEvent>(QuitButtonClicked);
+            EventManager.Instance.AddListener<NextLevelButtonClickedEvent>(NextLevelButtonClicked);
 
-			//Score Item
-			EventManager.Instance.AddListener<ScoreItemEvent>(ScoreHasBeenGained);
+        //Score Item
+        EventManager.Instance.AddListener<ScoreItemEvent>(ScoreHasBeenGained);
 
             //Victory
             EventManager.Instance.AddListener<GameVictoryEvent>(WinEvent);
@@ -123,6 +128,9 @@ public class GameManager : Manager<GameManager>
 
             //Enemy
             EventManager.Instance.AddListener<EnemyHasBeenDestroyEvent>(enemyDestroy);
+
+            //Level 
+            EventManager.Instance.AddListener<SettingCurrentLevelEvent>(ChangeLevel);
     }
 
 		public override void UnsubscribeEvents()
@@ -149,6 +157,9 @@ public class GameManager : Manager<GameManager>
             //Victory
             EventManager.Instance.RemoveListener<GameVictoryEvent>(WinEvent);
 
+            //Level 
+            EventManager.Instance.RemoveListener<SettingCurrentLevelEvent>(ChangeLevel);
+
     }
 		#endregion
 
@@ -167,7 +178,7 @@ public class GameManager : Manager<GameManager>
 		{
 			SetScore(0);
             SetNLives(m_NStartLives);
-		}
+        }
 		#endregion
 
 		#region Callbacks to events issued by Score items
@@ -203,16 +214,20 @@ public class GameManager : Manager<GameManager>
 		{
 			Application.Quit();
 		}
-		#endregion
 
-		#region GameState methods
-		private void Menu()
+        private void NextLevelButtonClicked(NextLevelButtonClickedEvent e)
+        {
+            EventManager.Instance.Raise(new GoToNextLevelEvent());
+        }
+    #endregion
+
+    #region GameState methods
+    private void Menu()
 		{
 			SetTimeScale(1);
 			m_GameState = GameState.gameMenu;
 			if(MusicLoopsManager.Instance)MusicLoopsManager.Instance.PlayMusic(Constants.MENU_MUSIC);
 			EventManager.Instance.Raise(new GameMenuEvent());
-            GameObject.Find("Player").transform.position = GameObject.Find("Level_1_Spawn_Point").transform.position;
         }
 
 		private void Play()
@@ -253,17 +268,15 @@ public class GameManager : Manager<GameManager>
 
         private void Win()
         {
-        Debug.Log("Bonsoir");
             m_GameState = GameState.gameVictory;
             //if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.MENU_MUSIC);
-    }
+        }
     #endregion
 
     #region Callsbacks to events issued by Player
     private void PlayerHasBeenHit(PlayerHasBeenHitEvent e)
     {
         DecrementNLives(1);
-        Debug.Log(m_NLives);
 
         if(m_NLives <= 0)
         {
@@ -289,6 +302,17 @@ public class GameManager : Manager<GameManager>
     {
         Debug.Log("RECEIVD");
         Win();
+    }
+    #endregion
+
+    #region Callsbacks to events issued by LevelManager
+    private void ChangeLevel(SettingCurrentLevelEvent e)
+    {
+        Destroy(m_player);
+        m_currentLevel = e.eLevel;
+        m_player = Instantiate(m_prefabPlayer, m_currentLevel.spawn_point.position, Quaternion.Euler(0, -90, 0));
+        m_player.transform.position = m_currentLevel.spawn_point.position;
+        m_cameraController.setTarget(m_player.transform);
     }
     #endregion
 }

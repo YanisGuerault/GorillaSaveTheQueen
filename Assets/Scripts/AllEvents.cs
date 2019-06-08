@@ -90,3 +90,10 @@ public class PlayerGetABonus: SDD.Events.Event
     public Bonus bonus;
 }
 #endregion
+
+#region Levels Manager Event
+public class SettingCurrentLevelEvent : SDD.Events.Event
+{
+    public Level eLevel;
+}
+#endregion

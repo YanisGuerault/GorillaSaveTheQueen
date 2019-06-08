@@ -52,6 +52,11 @@ public class Enemy : MonoBehaviour
 
     #region Attack & Hit Player
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        OnCollisionStay(collision);
+    }
+
     private void OnCollisionStay(Collision collision)
     {
         /*Debug.Log("Player : " + collision.gameObject.CompareTag("Player") + " hit : " + hit + " Anim name : " + anim.GetCurrentAnimatorStateInfo(0).IsName("zombie_attack") + "time : " + GetCurrentAnimatorTime(anim));*/

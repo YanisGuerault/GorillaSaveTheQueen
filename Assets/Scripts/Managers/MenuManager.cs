@@ -17,6 +17,7 @@ using SDD.Events;
 		[SerializeField] GameObject m_PanelInGameMenu;
 		[SerializeField] GameObject m_PanelGameOver;
         [SerializeField] GameObject m_PanelWin;
+        [SerializeField] GameObject m_PanelNextLevel;
 
     List<GameObject> m_AllPanels;
 		#endregion
@@ -24,12 +25,16 @@ using SDD.Events;
 		#region Events' subscription
 		public override void SubscribeEvents()
 		{
+            EventManager.Instance.AddListener<AskToGoToNextLevelEvent>(AskToGoToNextLevel);
+            EventManager.Instance.AddListener<GoToNextLevelEvent>(GoToNextLevel);
 			base.SubscribeEvents();
 		}
 
 		public override void UnsubscribeEvents()
 		{
-			base.UnsubscribeEvents();
+            EventManager.Instance.RemoveListener<AskToGoToNextLevelEvent>(AskToGoToNextLevel);
+            EventManager.Instance.RemoveListener<GoToNextLevelEvent>(GoToNextLevel);
+            base.UnsubscribeEvents();
 		}
 		#endregion
 
@@ -64,6 +69,7 @@ using SDD.Events;
 			m_AllPanels.Add(m_PanelInGameMenu);
 			m_AllPanels.Add(m_PanelGameOver);
             m_AllPanels.Add(m_PanelWin);
+            m_AllPanels.Add(m_PanelNextLevel);
 		}
 
 		void OpenPanel(GameObject panel)
@@ -99,10 +105,15 @@ using SDD.Events;
 			EventManager.Instance.Raise(new QuitButtonClickedEvent());
 		}
 
-		#endregion
+        public void NextLevelButtonHasBeenClicked()
+        {
+            EventManager.Instance.Raise(new NextLevelButtonClickedEvent());
+        }
 
-		#region Callbacks to GameManager events
-		protected override void GameMenu(GameMenuEvent e)
+    #endregion
+
+    #region Callbacks to GameManager events
+    protected override void GameMenu(GameMenuEvent e)
 		{
 			OpenPanel(m_PanelMainMenu);
 		}
@@ -129,13 +140,17 @@ using SDD.Events;
 
         protected override void GameVictory(GameVictoryEvent e)
         {
-            Debug.Log("COUCOU");
             OpenPanel(m_PanelWin);
         }
 
-    protected void GoToNextLEvel(GoToNextLevelEvent e)
-        {
-            OpenPanel(null);
-        }
-		#endregion
-	}
+    private void AskToGoToNextLevel(AskToGoToNextLevelEvent e)
+    {
+        OpenPanel(m_PanelNextLevel);
+    }
+
+    private void GoToNextLevel(GoToNextLevelEvent e)
+    {
+        OpenPanel(null);
+    }
+    #endregion
+}
