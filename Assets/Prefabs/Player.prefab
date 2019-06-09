@@ -331,12 +331,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_moveSpeed: 15
   m_turnSpeed: 200
-  m_jumpForce: 10
+  m_jumpForce: 15
   m_doubleJumpActive: 0
   m_animator: {fileID: 4279852446335371958}
   m_rigidBody: {fileID: 4248842990717276758}
   m_controlMode: 3
-  m_Camera: {fileID: 0}
 --- !u!1 &4193049749164458056
 GameObject:
   m_ObjectHideFlags: 0

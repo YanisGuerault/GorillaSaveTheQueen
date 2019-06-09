@@ -102,3 +102,10 @@ public class InstatiateLevelEvent : SDD.Events.Event
     public Level eLevel;
 }
 #endregion
+
+#region Bonus Event
+public class BonusToBePlacedEvent : SDD.Events.Event
+{
+    public Bonus eBonus;
+}
+#endregion

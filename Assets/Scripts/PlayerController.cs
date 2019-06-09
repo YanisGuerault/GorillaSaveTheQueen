@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float m_jumpForce = 4;
     [SerializeField] private bool m_doubleJumpActive = false;
 
+    public float Speed { get { return m_moveSpeed; } set { m_moveSpeed = value; }  }
+    public float Jump { get { return m_jumpForce; } set { m_jumpForce = value; } }
+
     [SerializeField] private Animator m_animator;
     [SerializeField] private Rigidbody m_rigidBody;
 
@@ -51,6 +54,45 @@ public class PlayerController : MonoBehaviour
     {
         m_Camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
     }
+
+    #region Events Subscriptions
+    public void SubscribeEvents()
+    {
+        EventManager.Instance.AddListener<BonusToBePlacedEvent>(PlaceBonus);
+    }
+
+    public void UnsubscribeEvents()
+    {
+        EventManager.Instance.RemoveListener<BonusToBePlacedEvent>(PlaceBonus);
+    }
+
+    private void OnDestroy()
+    {
+        UnsubscribeEvents();
+    }
+
+    private void Awake()
+    {
+        SubscribeEvents();
+    }
+    #endregion
+
+    #region Bonus
+
+    private void PlaceBonus(BonusToBePlacedEvent e)
+    {
+        m_animator.SetTrigger("Pickup");
+        StartCoroutine(PlaceObjectCoroutine(e.eBonus.Prefab));
+        Debug.Log(e.eBonus);
+        Debug.Log(e.eBonus.Prefab);
+    }
+
+    private IEnumerator PlaceObjectCoroutine(GameObject other)
+    {
+        yield return new WaitForSeconds(1.5f);
+        Instantiate(other, transform.position, Quaternion.Euler(0, 0, 0));
+    }
+    #endregion
 
     private void OnCollisionEnter(Collision collision)
     {

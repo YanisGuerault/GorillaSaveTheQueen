@@ -13,11 +13,28 @@ public class Enemy : MonoBehaviour
     private Transform m_Ground;
     private List<Collider> m_collisions = new List<Collider>();
 
+
+    public void SubscribeEvents()
+    {
+        EventManager.Instance.AddListener<EnemyHasBeenDestroyEvent>(EnemyHasBeenDestroy);
+    }
+
+    public void UnsubscribeEvents()
+    {
+        EventManager.Instance.RemoveListener<EnemyHasBeenDestroyEvent>(EnemyHasBeenDestroy);
+    }
+
     private void Awake()
     {
         m_player = GameObject.FindGameObjectWithTag("Player").transform;
         m_nav = GetComponent<NavMeshAgent>();
         m_anim = GetComponent<Animator>();
+        SubscribeEvents();
+    }
+
+    private void OnDestroy()
+    {
+        UnsubscribeEvents();
     }
 
     #region Follow player if see him
@@ -129,6 +146,14 @@ public class Enemy : MonoBehaviour
         AnimatorStateInfo animState = targetAnim.GetCurrentAnimatorStateInfo(layer);
         float currentTime = animState.normalizedTime % 1;
         return currentTime;
+    }
+
+    private void EnemyHasBeenDestroy(EnemyHasBeenDestroyEvent e)
+    {
+        if(e.eEnemy == this)
+        {
+            m_anim.SetTrigger("Dead");
+        }
     }
 
     #endregion

@@ -37,7 +37,13 @@ public class GameManager : Manager<GameManager>
     void SetNLives(int nLives)
     {
         m_NLives = nLives;
-        EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_bonus });
+        EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_Bonus });
+    }
+
+    void IncrementNLives(int increment)
+    {
+        m_NLives += increment;
+        EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_Bonus });
     }
     #endregion
 
@@ -70,27 +76,57 @@ public class GameManager : Manager<GameManager>
         Score = score;
 
         if (raiseEvent)
-            EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_bonus });
+            EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_Bonus });
     }
     #endregion
 
     #region Bonus
-    private Bonus m_ActiveBonus = null;
+    private List<Bonus> m_Bonus = new List<Bonus>();
 
-    public Bonus getBonusActive()
+    public List<Bonus> getBonus()
     {
-        return m_ActiveBonus;
+        return m_Bonus;
     }
 
     public void AddABonus(Bonus bonus)
     {
-        m_ActiveBonus = bonus;
-        EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_ActiveBonus });
+        switch(bonus.GetType().ToString())
+        {
+            case "LifeBonus":
+                IncrementNLives(1);
+                break;
+            case "SpeedBonus":
+                StartCoroutine(SpeedBonusCoroutine(5,10f,bonus));
+                break;
+            case "JumpBonus":
+                StartCoroutine(JumpBonusCoroutine(5, 10f,bonus));
+                break;
+            case "TrapBonus":
+                break;
+        }
+        m_Bonus.Add(bonus);
+        EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_Bonus });
     }
 
-    public void removeActiveBonus()
+    private void Update()
     {
-        m_ActiveBonus = null;
+        if(Input.GetButton("Fire1"))
+        {
+            foreach(Bonus bonus in m_Bonus)
+            {
+                if(bonus.GetType() == typeof(TrapBonus))
+                {
+                    EventManager.Instance.Raise(new BonusToBePlacedEvent() { eBonus = bonus });
+                    //m_Bonus.Remove(bonus);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void removeActiveBonus(Bonus bonus)
+    {
+        m_Bonus.Remove(bonus);
     }
     #endregion
 
@@ -288,6 +324,22 @@ public class GameManager : Manager<GameManager>
     private void PlayerGetABonus(PlayerGetABonus e)
     {
         AddABonus(e.bonus);
+    }
+
+    private IEnumerator SpeedBonusCoroutine(int increment,float time,Bonus bonus)
+    {
+        m_player.GetComponent<PlayerController>().Speed += increment;
+        yield return new WaitForSeconds(time);
+        m_player.GetComponent<PlayerController>().Speed -= increment;
+        m_Bonus.Remove(bonus);
+    }
+
+    private IEnumerator JumpBonusCoroutine(int increment, float time,Bonus bonus)
+    {
+        m_player.GetComponent<PlayerController>().Jump += increment;
+        yield return new WaitForSeconds(time);
+        m_player.GetComponent<PlayerController>().Jump -= increment;
+        m_Bonus.Remove(bonus);
     }
     #endregion
 

@@ -5,9 +5,10 @@ using UnityEngine;
 
 public abstract class Bonus : MonoBehaviour
 {
+    [SerializeField] public GameObject Prefab;
     Rigidbody rg;
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         rg = this.GetComponent<Rigidbody>();
         rg.AddForce(Vector3.up * 200+Vector3.left*150);
