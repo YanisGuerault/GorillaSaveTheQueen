@@ -140,6 +140,7 @@ using SDD.Events;
 
         protected override void GameVictory(GameVictoryEvent e)
         {
+            Debug.Log("UES");
             OpenPanel(m_PanelWin);
         }
 

@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Enemy
   - Water
+  - EnemySpawnPoint
+  - CaseBonus
   layers:
   - Default
   - TransparentFX

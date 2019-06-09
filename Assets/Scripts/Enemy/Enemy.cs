@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
             m_anim.SetBool("SeePlayer", false);
         }
 
-        if (transform.position.y < m_Ground.position.y - 10)
+        if (m_Ground != null && transform.position.y < m_Ground.position.y - 10)
         {
             EventManager.Instance.Raise(new EnemyHasBeenDestroyEvent() { eEnemy = this });
         }

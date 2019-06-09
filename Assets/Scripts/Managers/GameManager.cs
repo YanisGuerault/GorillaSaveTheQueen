@@ -75,23 +75,22 @@ public class GameManager : Manager<GameManager>
     #endregion
 
     #region Bonus
-    private List<Bonus> m_bonus = new List<Bonus>();
+    private Bonus m_ActiveBonus = null;
 
-    public List<Bonus> getBonusList()
+    public Bonus getBonusActive()
     {
-        return m_bonus;
+        return m_ActiveBonus;
     }
 
     public void AddABonus(Bonus bonus)
     {
-        m_bonus.Add(bonus);
-        Debug.Log(bonus);
-        EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_bonus });
+        m_ActiveBonus = bonus;
+        EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_ActiveBonus });
     }
 
-    public void removeABonus(Bonus bonus)
+    public void removeActiveBonus()
     {
-        m_bonus.Remove(bonus);
+        m_ActiveBonus = null;
     }
     #endregion
 
@@ -176,6 +175,7 @@ public class GameManager : Manager<GameManager>
 		//Game initialization
 		void InitNewGame(bool raiseStatsEvent = true)
 		{
+
 			SetScore(0);
             SetNLives(m_NStartLives);
         }
@@ -234,7 +234,8 @@ public class GameManager : Manager<GameManager>
 		{
 			InitNewGame();
 			SetTimeScale(1);
-			m_GameState = GameState.gamePlay;
+            EventManager.Instance.Raise(new InstatiateLevelEvent() { eLevel = m_currentLevel });
+            m_GameState = GameState.gamePlay;
 
 		    if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(Constants.GAMEPLAY_MUSIC);
 			EventManager.Instance.Raise(new GamePlayEvent());
@@ -300,7 +301,6 @@ public class GameManager : Manager<GameManager>
     #region Callsbacks to events issued by Win
     private void WinEvent(GameVictoryEvent e)
     {
-        Debug.Log("RECEIVD");
         Win();
     }
     #endregion

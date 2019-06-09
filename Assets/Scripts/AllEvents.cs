@@ -96,4 +96,9 @@ public class SettingCurrentLevelEvent : SDD.Events.Event
 {
     public Level eLevel;
 }
+
+public class InstatiateLevelEvent : SDD.Events.Event
+{
+    public Level eLevel;
+}
 #endregion

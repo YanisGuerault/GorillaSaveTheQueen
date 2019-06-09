@@ -64,8 +64,16 @@ public class LevelManager : Manager<LevelManager>
     public void GoToNextLevel(GoToNextLevelEvent e)
     {
         m_CurrentLevelIndex++;
-        m_CurrentLevel = m_LevelsPrefabs[m_CurrentLevelIndex].GetComponent<Level>();
-        EventManager.Instance.Raise(new SettingCurrentLevelEvent() { eLevel = m_CurrentLevel });
+        if (m_CurrentLevelIndex >= m_LevelsPrefabs.Length)
+        {
+            EventManager.Instance.Raise(new GameVictoryEvent());
+        }
+        else
+        {
+            m_CurrentLevel = m_LevelsPrefabs[m_CurrentLevelIndex].GetComponent<Level>();
+            EventManager.Instance.Raise(new SettingCurrentLevelEvent() { eLevel = m_CurrentLevel });
+            EventManager.Instance.Raise(new InstatiateLevelEvent() { eLevel = m_CurrentLevel });
+        }
     }
     #endregion
 }

@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class CaseBonus : MonoBehaviour
 {
-    [SerializeField] private GameObject m_Bonus;
+    [SerializeField] public GameObject m_Bonus;
     [SerializeField] private Material m_texture;
+
     private bool m_activated = false;
     private void OnCollisionEnter(Collision collision)
     {
