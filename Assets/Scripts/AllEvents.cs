@@ -28,6 +28,7 @@ public class GameStatisticsChangedEvent : SDD.Events.Event
 	public float eBestScore { get; set; }
 	public float eScore { get; set; }
 	public int eNLives { get; set; }
+    public List<Bonus> eBonus { get; set; }
 }
 #endregion
 
@@ -62,10 +63,9 @@ public class ScoreItemEvent : SDD.Events.Event
 #endregion
 
 #region Enemy Event
-public class EnemyHasBeenDestroyedEvent : SDD.Events.Event
+public class EnemyHasBeenDestroyEvent : SDD.Events.Event
 {
-    //public Enemy eEnemy;
-    public bool eDestroyedByPlayer;
+    public Enemy eEnemy;
 }
 #endregion
 
@@ -88,5 +88,12 @@ public class PlayerHasBeenHitEvent: SDD.Events.Event
 public class PlayerGetABonus: SDD.Events.Event
 {
     public Bonus bonus;
+}
+#endregion
+
+#region Levels Manager Event
+public class SettingCurrentLevelEvent : SDD.Events.Event
+{
+    public Level eLevel;
 }
 #endregion

@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private ControlMode m_controlMode = ControlMode.TwoDLeft;
 
-    [SerializeField] private CameraController m_Camera;
+    private CameraController m_Camera ;
 
     private float m_currentV = 0;
     private float m_currentH = 0;
@@ -47,6 +47,11 @@ public class PlayerController : MonoBehaviour
 
     private List<Collider> m_collisions = new List<Collider>();
 
+    private void Start()
+    {
+        m_Camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         ContactPoint[] contactPoints = collision.contacts;
@@ -60,11 +65,6 @@ public class PlayerController : MonoBehaviour
                 }
                 m_isGrounded = true;
             }
-        }
-
-       if (collision.gameObject.GetComponent<Enemy>())
-        {
-            EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
         }
     }
 
@@ -86,8 +86,8 @@ public class PlayerController : MonoBehaviour
 
             if (collision.gameObject.CompareTag("Ground"))
             {
-                m_Camera.setGround(collision.transform);
                 m_Ground = collision.transform;
+                m_Camera.setGround(collision.transform);
             }
             if (!m_collisions.Contains(collision.collider))
             {
@@ -104,13 +104,12 @@ public class PlayerController : MonoBehaviour
             if (m_collisions.Count == 0) { m_isGrounded = false; }
         }
 
-        bool pickupButton = Input.GetButton("Fire1") ? true : false;
+        /*bool pickupButton = Input.GetButton("Fire1") ? true : false;
 
         if (pickupButton && collision.gameObject.GetComponent<Bonus>())
         {
-            PickupObject();
-            StartCoroutine(CoroutinePickupObject(1.5f, collision.gameObject));
-        }
+            PickupObject(collision.gameObject);
+        }*/
     }
 
     private void OnCollisionExit(Collision collision)
@@ -122,33 +121,24 @@ public class PlayerController : MonoBehaviour
         if (m_collisions.Count == 0) { m_isGrounded = false; }
     }
 
-    /*private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        bool pickupButton = Input.GetButton("Fire1") ? true : false;
-
-        if (pickupButton && other.GetComponent<Bonus>())
-        {
-            PickupObject();
-            StartCoroutine(CoroutinePickupObject(1.5f,other));
-        }
+        OnTriggerStay(other);
     }
 
     private void OnTriggerStay(Collider other)
     {
-        bool pickupButton = Input.GetButton("Fire1") ? true : false;
-
-        if (pickupButton && other.GetComponent<Bonus>())
+        if(other.gameObject.CompareTag("Water"))
         {
-            PickupObject();
-            StartCoroutine(CoroutinePickupObject(1.5f,other));
+            EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
         }
-    }*/
+    }
 
     private IEnumerator CoroutinePickupObject(float x,GameObject other)
     {
-            yield return new WaitForSeconds(x);
-            Destroy(other.gameObject);
-            EventManager.Instance.Raise(new PlayerGetABonus());
+        yield return new WaitForSeconds(x);
+        EventManager.Instance.Raise(new PlayerGetABonus() { bonus = other.GetComponent<Bonus>() });
+        Destroy(other);
     }
 
     void Update()
@@ -277,9 +267,10 @@ public class PlayerController : MonoBehaviour
         JumpingAndLanding();
     }
 
-    private void PickupObject()
+    private void PickupObject(GameObject gameobject)
     {
         m_animator.SetTrigger("Pickup");
+        StartCoroutine(CoroutinePickupObject(1.5f, gameobject));
     }
 
     private void JumpingAndLanding()
@@ -313,7 +304,7 @@ public class PlayerController : MonoBehaviour
             m_animator.SetTrigger("Jump");
         }
 
-        if(transform.position.y < m_Ground.position.y-10)
+        if (transform.position.y < m_Ground.position.y-10)
         {
             EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
         }

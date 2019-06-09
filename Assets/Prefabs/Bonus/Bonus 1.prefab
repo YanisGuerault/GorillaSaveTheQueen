@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Bonus: {fileID: 7923198759805727463, guid: 80cbf73bf0cb5614296fac3317b0d49d, type: 3}
+  m_texture: {fileID: 2100000, guid: cda77b1007a45ad429d4ef0ec713c248, type: 2}
 --- !u!1 &7986314625482065142
 GameObject:
   m_ObjectHideFlags: 0

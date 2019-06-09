@@ -9,69 +9,94 @@ public enum GameState { gameMenu, gamePlay, gameNextLevel, gamePause, gameOver, 
 
 public class GameManager : Manager<GameManager>
 {
-		#region Game State
-		private GameState m_GameState;
-		public bool IsPlaying { get { return m_GameState == GameState.gamePlay; } }
-		#endregion
+    #region Game State
+    [SerializeField] private GameObject m_prefabPlayer;
+    [SerializeField] private CameraController m_cameraController;
+    private GameObject m_player;
+    private GameState m_GameState;
+    public bool IsPlaying { get { return m_GameState == GameState.gamePlay; } }
+    private Level m_currentLevel;
+    #endregion
 
-		//LIVES
-		#region Lives
-		[Header("GameManager")]
-		[SerializeField]
-		private int m_NStartLives;
+    //LIVES
+    #region Lives
+    [Header("GameManager")]
+    [SerializeField]
+    private int m_NStartLives;
 
-		private int m_NLives;
-		public int NLives { get { return m_NLives; } }
-		void DecrementNLives(int decrement)
-		{
-            if (m_NLives > 0)
-            {
-                SetNLives(m_NLives - decrement);
-            }
-		}
+    private int m_NLives;
+    public int NLives { get { return m_NLives; } }
+    void DecrementNLives(int decrement)
+    {
+        if (m_NLives > 0)
+        {
+            SetNLives(m_NLives - decrement);
+        }
+    }
 
-		void SetNLives(int nLives)
-		{
-			m_NLives = nLives;
-			EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives});
-		}
-		#endregion
+    void SetNLives(int nLives)
+    {
+        m_NLives = nLives;
+        EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_bonus });
+    }
+    #endregion
 
 
-		#region Score
-		private float m_Score;
-		public float Score
-		{
-			get { return m_Score; }
-			set
-			{
-				m_Score = value;
-				BestScore = Mathf.Max(BestScore, value);
-			}
-		}
+    #region Score
+    private float m_Score;
+    public float Score
+    {
+        get { return m_Score; }
+        set
+        {
+            m_Score = value;
+            BestScore = Mathf.Max(BestScore, value);
+        }
+    }
 
-		public float BestScore
-		{
-			get { return PlayerPrefs.GetFloat("BEST_SCORE", 0); }
-			set { PlayerPrefs.SetFloat("BEST_SCORE", value); }
-		}
+    public float BestScore
+    {
+        get { return PlayerPrefs.GetFloat("BEST_SCORE", 0); }
+        set { PlayerPrefs.SetFloat("BEST_SCORE", value); }
+    }
 
-		void IncrementScore(float increment)
-		{
-			SetScore(m_Score + increment);
-		}
+    void IncrementScore(float increment)
+    {
+        SetScore(m_Score + increment);
+    }
 
-		void SetScore(float score, bool raiseEvent = true)
-		{
-			Score = score;
+    void SetScore(float score, bool raiseEvent = true)
+    {
+        Score = score;
 
-			if (raiseEvent)
-				EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives });
-		}
-		#endregion
+        if (raiseEvent)
+            EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_bonus });
+    }
+    #endregion
 
-		#region Time
-		void SetTimeScale(float newTimeScale)
+    #region Bonus
+    private List<Bonus> m_bonus = new List<Bonus>();
+
+    public List<Bonus> getBonusList()
+    {
+        return m_bonus;
+    }
+
+    public void AddABonus(Bonus bonus)
+    {
+        m_bonus.Add(bonus);
+        Debug.Log(bonus);
+        EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_bonus });
+    }
+
+    public void removeABonus(Bonus bonus)
+    {
+        m_bonus.Remove(bonus);
+    }
+    #endregion
+
+    #region Time
+    void SetTimeScale(float newTimeScale)
 		{
 			Time.timeScale = newTimeScale;
 		}
@@ -89,13 +114,24 @@ public class GameManager : Manager<GameManager>
 			EventManager.Instance.AddListener<ResumeButtonClickedEvent>(ResumeButtonClicked);
 			EventManager.Instance.AddListener<EscapeButtonClickedEvent>(EscapeButtonClicked);
 			EventManager.Instance.AddListener<QuitButtonClickedEvent>(QuitButtonClicked);
+            EventManager.Instance.AddListener<NextLevelButtonClickedEvent>(NextLevelButtonClicked);
 
-			//Score Item
-			EventManager.Instance.AddListener<ScoreItemEvent>(ScoreHasBeenGained);
+        //Score Item
+        EventManager.Instance.AddListener<ScoreItemEvent>(ScoreHasBeenGained);
+
+            //Victory
+            EventManager.Instance.AddListener<GameVictoryEvent>(WinEvent);
 
             //Player
             EventManager.Instance.AddListener<PlayerHasBeenHitEvent>(PlayerHasBeenHit);
-		}
+            EventManager.Instance.AddListener<PlayerGetABonus>(PlayerGetABonus);
+
+            //Enemy
+            EventManager.Instance.AddListener<EnemyHasBeenDestroyEvent>(enemyDestroy);
+
+            //Level 
+            EventManager.Instance.AddListener<SettingCurrentLevelEvent>(ChangeLevel);
+    }
 
 		public override void UnsubscribeEvents()
 		{
@@ -113,6 +149,17 @@ public class GameManager : Manager<GameManager>
 
             //Player
             EventManager.Instance.RemoveListener<PlayerHasBeenHitEvent>(PlayerHasBeenHit);
+            EventManager.Instance.RemoveListener<PlayerGetABonus>(PlayerGetABonus);
+
+            //Enemy
+            EventManager.Instance.RemoveListener<EnemyHasBeenDestroyEvent>(enemyDestroy);
+
+            //Victory
+            EventManager.Instance.RemoveListener<GameVictoryEvent>(WinEvent);
+
+            //Level 
+            EventManager.Instance.RemoveListener<SettingCurrentLevelEvent>(ChangeLevel);
+
     }
 		#endregion
 
@@ -131,7 +178,7 @@ public class GameManager : Manager<GameManager>
 		{
 			SetScore(0);
             SetNLives(m_NStartLives);
-		}
+        }
 		#endregion
 
 		#region Callbacks to events issued by Score items
@@ -167,16 +214,20 @@ public class GameManager : Manager<GameManager>
 		{
 			Application.Quit();
 		}
-		#endregion
 
-		#region GameState methods
-		private void Menu()
+        private void NextLevelButtonClicked(NextLevelButtonClickedEvent e)
+        {
+            EventManager.Instance.Raise(new GoToNextLevelEvent());
+        }
+    #endregion
+
+    #region GameState methods
+    private void Menu()
 		{
 			SetTimeScale(1);
 			m_GameState = GameState.gameMenu;
 			if(MusicLoopsManager.Instance)MusicLoopsManager.Instance.PlayMusic(Constants.MENU_MUSIC);
 			EventManager.Instance.Raise(new GameMenuEvent());
-            GameObject.Find("Player").transform.position = GameObject.Find("SpawnPoint").transform.position;
         }
 
 		private void Play()
@@ -214,6 +265,12 @@ public class GameManager : Manager<GameManager>
 			EventManager.Instance.Raise(new GameOverEvent());
 			if(SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.GAMEOVER_SFX);
 		}
+
+        private void Win()
+        {
+            m_GameState = GameState.gameVictory;
+            //if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.MENU_MUSIC);
+        }
     #endregion
 
     #region Callsbacks to events issued by Player
@@ -221,10 +278,41 @@ public class GameManager : Manager<GameManager>
     {
         DecrementNLives(1);
 
-        if(m_NStartLives >= 0)
+        if(m_NLives <= 0)
         {
             Over();
         }
+    }
+
+    private void PlayerGetABonus(PlayerGetABonus e)
+    {
+        AddABonus(e.bonus);
+    }
+    #endregion
+
+    #region Callsbacks to events issued by Enemy
+    private void enemyDestroy(EnemyHasBeenDestroyEvent e)
+    {
+
+    }
+    #endregion
+
+    #region Callsbacks to events issued by Win
+    private void WinEvent(GameVictoryEvent e)
+    {
+        Debug.Log("RECEIVD");
+        Win();
+    }
+    #endregion
+
+    #region Callsbacks to events issued by LevelManager
+    private void ChangeLevel(SettingCurrentLevelEvent e)
+    {
+        Destroy(m_player);
+        m_currentLevel = e.eLevel;
+        m_player = Instantiate(m_prefabPlayer, m_currentLevel.spawn_point.position, Quaternion.Euler(0, -90, 0));
+        m_player.transform.position = m_currentLevel.spawn_point.position;
+        m_cameraController.setTarget(m_player.transform);
     }
     #endregion
 }
