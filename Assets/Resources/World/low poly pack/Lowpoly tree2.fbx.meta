@@ -1,9 +1,7 @@
 fileFormatVersion: 2
-guid: b2c61055c4a01ad43b08434f8178e1c9
-timeCreated: 1497967163
-licenseType: Store
+guid: 8f785455e3508d448b2dc86444bf7c6f
 ModelImporter:
-  serializedVersion: 19
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: Component_100_1
     100002: Component_100_2
@@ -1327,6 +1325,37 @@ ModelImporter:
     401316: Mesh97
     401318: Mesh98
     401320: Mesh99
+    2100000: Color_B03
+    2100002: Color_D06
+    2100004: Color_G06
+    2100006: Color_M00
+    2100008: FrontColor
+    2100010: Terrazzo
+    2100012: Color_G03
+    2100014: Color_M05
+    2100016: Color_C08
+    2100018: Color_F04
+    2100020: Color_B04
+    2100022: Color_D08
+    2100024: Color_E02
+    2100026: Color_I03
+    2100028: Color_C07
+    2100030: Color_M04
+    2100032: Color_F07
+    2100034: Color_D05
+    2100036: Color_D02
+    2100038: Translucent_Glass_Blue
+    2100040: Color_G08
+    2100042: Color_D07
+    2100044: Color_G07
+    2100046: Color_C06
+    2100048: Color_I08
+    2100050: Color_M02
+    2100052: Color_B06
+    2100054: Color_H08
+    2100056: Color_B05
+    2100058: Color_E05
+    2100060: Color_L02
     2300000: Mesh1
     2300002: Mesh10
     2300004: Mesh100
@@ -2248,26 +2277,33 @@ ModelImporter:
     4300608: Mesh305
     4300610: Mesh306
     4300612: Mesh307
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -2275,22 +2311,34 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
     importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -2305,7 +2353,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
