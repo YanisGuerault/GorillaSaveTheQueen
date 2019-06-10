@@ -8600,7 +8600,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Prefab: {fileID: 5908253930647374521, guid: 592eefc43a4a5244d88f35f456f320a4,
     type: 3}
-  m_Bonus: {fileID: 1306000505799395438, guid: a702db79d4ebe4549b1a97d17354c94a, type: 3}
+  m_Bonus: {fileID: 7923198759805727463, guid: 812dc717cb3c2df40b6f2957569baeb0, type: 3}
 --- !u!1 &1986236097 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1680404950657250, guid: 68480a01e4a00ab45b3d746ae2fc86ee,
