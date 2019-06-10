@@ -15,6 +15,8 @@ public class Level : MonoBehaviour, IEventHandler
     private GameObject[] m_Bonus;
     private SpawnPoint[] m_bonusSpawnPoint;
 
+    public bool IsLast = false;
+
     public void SubscribeEvents()
     {
         EventManager.Instance.AddListener<InstatiateLevelEvent>(LevelInstatiate);
@@ -45,6 +47,7 @@ public class Level : MonoBehaviour, IEventHandler
     {
         if(e.eLevel == this)
         {
+            Debug.Log(e.eLevel);
             if (m_enemies != null)
             {
                 foreach (GameObject en in m_enemies)

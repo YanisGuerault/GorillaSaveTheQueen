@@ -101,6 +101,15 @@ public class InstatiateLevelEvent : SDD.Events.Event
 {
     public Level eLevel;
 }
+
+public class InitFirstLevelEvent : SDD.Events.Event
+{
+
+}
+
+public class IsVictoryEvent : SDD.Events.Event
+{
+}
 #endregion
 
 #region Bonus Event

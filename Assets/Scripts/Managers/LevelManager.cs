@@ -24,6 +24,7 @@ public class LevelManager : Manager<LevelManager>
             m_CurrentLevel = m_LevelsPrefabs[0].GetComponent<Level>();
             EventManager.Instance.Raise(new SettingCurrentLevelEvent() { eLevel = m_CurrentLevel });
         }
+        m_LevelsPrefabs[m_LevelsPrefabs.Length - 1].GetComponent<Level>().IsLast = true;
     }
 
     private void Reset()
@@ -42,12 +43,14 @@ public class LevelManager : Manager<LevelManager>
     {
         base.SubscribeEvents();
         EventManager.Instance.AddListener<GoToNextLevelEvent>(GoToNextLevel);
+        EventManager.Instance.AddListener<InitFirstLevelEvent>(InitFirstLevel);
     }
 
     public override void UnsubscribeEvents()
     {
         base.UnsubscribeEvents();
         EventManager.Instance.RemoveListener<GoToNextLevelEvent>(GoToNextLevel);
+        EventManager.Instance.RemoveListener<InitFirstLevelEvent>(InitFirstLevel);
     }
     #endregion
 
@@ -64,8 +67,6 @@ public class LevelManager : Manager<LevelManager>
     public void GoToNextLevel(GoToNextLevelEvent e)
     {
         m_CurrentLevelIndex++;
-        Debug.Log(m_CurrentLevelIndex);
-        Debug.Log(m_LevelsPrefabs.Length);
         if (m_CurrentLevelIndex >= m_LevelsPrefabs.Length)
         {
             EventManager.Instance.Raise(new GameVictoryEvent());
@@ -76,6 +77,11 @@ public class LevelManager : Manager<LevelManager>
             EventManager.Instance.Raise(new SettingCurrentLevelEvent() { eLevel = m_CurrentLevel });
             EventManager.Instance.Raise(new InstatiateLevelEvent() { eLevel = m_CurrentLevel });
         }
+    }
+
+    private void InitFirstLevel(InitFirstLevelEvent e)
+    {
+        Start();
     }
     #endregion
 }

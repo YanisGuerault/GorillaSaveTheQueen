@@ -140,14 +140,13 @@ using SDD.Events;
 
         protected override void GameVictory(GameVictoryEvent e)
         {
-            Debug.Log("UES");
             OpenPanel(m_PanelWin);
         }
 
-    private void AskToGoToNextLevel(AskToGoToNextLevelEvent e)
-    {
-        OpenPanel(m_PanelNextLevel);
-    }
+        private void AskToGoToNextLevel(AskToGoToNextLevelEvent e)
+        {
+            OpenPanel(m_PanelNextLevel);
+        }
 
     private void GoToNextLevel(GoToNextLevelEvent e)
     {

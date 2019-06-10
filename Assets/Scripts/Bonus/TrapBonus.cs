@@ -24,23 +24,21 @@ public class TrapBonus : Bonus
     {
         if (m_collect && other.gameObject.CompareTag("Player"))
         {
+            m_collect = false;
             EventManager.Instance.Raise(new PlayerGetABonus() { bonus = this.GetType() });
             Destroy(this.gameObject);
         }
 
-        if (m_started && !m_activated && !m_collect)
+        if (m_started && !m_activated && !m_collect && (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Player")))
         {
-            Debug.Log(m_activated);
+            m_activated = true;
+            m_anim.SetTrigger("Activated");
             if (other.gameObject.CompareTag("Enemy"))
             {
-                m_activated = true;
-                m_anim.SetTrigger("Activated");
                 EventManager.Instance.Raise(new EnemyHasBeenDestroyEvent() { eEnemy = other.gameObject.GetComponent<Enemy>() });
             }
             else if (other.gameObject.CompareTag("Player"))
             {
-                m_activated = true;
-                m_anim.SetTrigger("Activated");
                 EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
             }
         }

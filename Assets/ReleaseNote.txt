@@ -1,0 +1,25 @@
+Projet réalisé par Yanis Guérault et Antoine Blanquet dans le cadre de l'unité Infographie 3D I.
+
+Instructions du jeu :
+
+Contrôles : Flèches gauches et droites (ou Q et D) pour le déplacement. Espace pour sauter. Ctrl Gauche (Fire 1) pour placer un Bonus de type piège.
+Conditions de Victoire : Passer sous l'arche asiataque à la fin du dernier niveau.
+Conditions de Défaites : Tomber dans le vide, se faire tuer par un ennemi ou un piège.
+Capacités du Joueur :
+	- De base : Saut
+	- Avec Bonus : Invulnérabilité, possiblité de poser des pièges.
+
+Limitations :
+Bugs connus : 
+Voies d'amélioration :
+
+Repartition du travail :
+	- Script (Code C#) : Yanis
+	- Prefab (Characters) : Assets + Yanis
+	- Level Design : Antoine
+	- Game Design : Antoine
+
+Assets : 
+	- Characters : Super Cyan Character Pack Free Sample et Zombie, obtenu sur l'Asset Store, Gratuit
+	- Bonus : Animated Trap, obtenu sur l'Asset Store, Gratuit
+	- World : 

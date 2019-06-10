@@ -16,6 +16,7 @@ public class GameManager : Manager<GameManager>
     private GameState m_GameState;
     public bool IsPlaying { get { return m_GameState == GameState.gamePlay; } }
     private Level m_currentLevel;
+    private bool inverunability = false;
     #endregion
 
     //LIVES
@@ -103,6 +104,9 @@ public class GameManager : Manager<GameManager>
                 break;
             case "TrapBonus":
                 break;
+            case "InverunabilityBonus":
+                StartCoroutine(InvulnerabilityBonusCoroutine(10f, bonus));
+                break;
         }
         m_Bonus.Add(bonus);
         EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_Bonus });
@@ -112,12 +116,14 @@ public class GameManager : Manager<GameManager>
     {
         if(Input.GetButton("Fire1"))
         {
+            bool use = false;
             foreach(System.Type bonus in m_Bonus)
             {
-                if(bonus == typeof(TrapBonus))
+                if(!use && bonus == typeof(TrapBonus))
                 {
+                    use = true;
                     EventManager.Instance.Raise(new BonusToBePlacedEvent() { eBonus = bonus });
-                    m_Bonus.Remove(bonus);
+                    removeABonus(bonus);
                     break;
                 }
             }
@@ -167,6 +173,7 @@ public class GameManager : Manager<GameManager>
 
             //Level 
             EventManager.Instance.AddListener<SettingCurrentLevelEvent>(ChangeLevel);
+            EventManager.Instance.AddListener<IsVictoryEvent>(isVictoryEvent);
     }
 
 		public override void UnsubscribeEvents()
@@ -195,6 +202,7 @@ public class GameManager : Manager<GameManager>
 
             //Level 
             EventManager.Instance.RemoveListener<SettingCurrentLevelEvent>(ChangeLevel);
+            EventManager.Instance.RemoveListener<IsVictoryEvent>(isVictoryEvent);
 
     }
 		#endregion
@@ -261,6 +269,10 @@ public class GameManager : Manager<GameManager>
     #region GameState methods
     private void Menu()
 		{
+            if(m_GameState == GameState.gameVictory)
+            {
+                EventManager.Instance.Raise(new InitFirstLevelEvent());
+            }
 			SetTimeScale(1);
 			m_GameState = GameState.gameMenu;
 			if(MusicLoopsManager.Instance)MusicLoopsManager.Instance.PlayMusic(Constants.MENU_MUSIC);
@@ -314,11 +326,14 @@ public class GameManager : Manager<GameManager>
     #region Callsbacks to events issued by Player
     private void PlayerHasBeenHit(PlayerHasBeenHitEvent e)
     {
-        DecrementNLives(1);
-
-        if(m_NLives <= 0)
+        if (!inverunability)
         {
-            Over();
+            DecrementNLives(1);
+
+            if (m_NLives <= 0)
+            {
+                Over();
+            }
         }
     }
 
@@ -332,7 +347,7 @@ public class GameManager : Manager<GameManager>
         m_player.GetComponent<PlayerController>().Speed += increment;
         yield return new WaitForSeconds(time);
         m_player.GetComponent<PlayerController>().Speed -= increment;
-        m_Bonus.Remove(bonus);
+        removeABonus(bonus);
     }
 
     private IEnumerator JumpBonusCoroutine(int increment, float time, System.Type bonus)
@@ -340,7 +355,15 @@ public class GameManager : Manager<GameManager>
         m_player.GetComponent<PlayerController>().Jump += increment;
         yield return new WaitForSeconds(time);
         m_player.GetComponent<PlayerController>().Jump -= increment;
-        m_Bonus.Remove(bonus);
+        removeABonus(bonus);
+    }
+
+    private IEnumerator InvulnerabilityBonusCoroutine(float time, System.Type bonus)
+    {
+        inverunability = true;
+        yield return new WaitForSeconds(time);
+        inverunability = false;
+        removeABonus(bonus);
     }
     #endregion
 
@@ -355,6 +378,18 @@ public class GameManager : Manager<GameManager>
     private void WinEvent(GameVictoryEvent e)
     {
         Win();
+    }
+
+    private void isVictoryEvent(IsVictoryEvent e)
+    {
+        if(m_currentLevel.IsLast)
+        {
+            EventManager.Instance.Raise(new GameVictoryEvent());
+        }
+        else
+        {
+            EventManager.Instance.Raise(new AskToGoToNextLevelEvent());
+        }
     }
     #endregion
 

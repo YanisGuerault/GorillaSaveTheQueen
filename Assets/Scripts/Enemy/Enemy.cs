@@ -159,7 +159,7 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator CoroutineDead()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.25f);
         m_anim.SetTrigger("Dead");
         dead = true;
         Destroy(this.GetComponent<NavMeshAgent>());
