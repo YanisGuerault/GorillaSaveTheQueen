@@ -28,7 +28,7 @@ using SDD.Events;
 		{
         if (e.eBonus != null)
         {
-            m_TxtScore.text = e.eBonus.ToString();
+            m_TxtScore.text = e.eBonus.Count.ToString();
         }
         else
         {

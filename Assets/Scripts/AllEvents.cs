@@ -28,7 +28,7 @@ public class GameStatisticsChangedEvent : SDD.Events.Event
 	public float eBestScore { get; set; }
 	public float eScore { get; set; }
 	public int eNLives { get; set; }
-    public List<Bonus> eBonus { get; set; }
+    public List<System.Type> eBonus { get; set; }
 }
 #endregion
 
@@ -87,7 +87,7 @@ public class PlayerHasBeenHitEvent: SDD.Events.Event
 
 public class PlayerGetABonus: SDD.Events.Event
 {
-    public Bonus bonus;
+    public System.Type bonus;
 }
 #endregion
 
@@ -106,6 +106,6 @@ public class InstatiateLevelEvent : SDD.Events.Event
 #region Bonus Event
 public class BonusToBePlacedEvent : SDD.Events.Event
 {
-    public Bonus eBonus;
+    public System.Type eBonus;
 }
 #endregion

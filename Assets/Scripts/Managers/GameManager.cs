@@ -81,14 +81,14 @@ public class GameManager : Manager<GameManager>
     #endregion
 
     #region Bonus
-    private List<Bonus> m_Bonus = new List<Bonus>();
+    private List<System.Type> m_Bonus = new List<System.Type>();
 
-    public List<Bonus> getBonus()
+    public List<System.Type> getBonus()
     {
         return m_Bonus;
     }
 
-    public void AddABonus(Bonus bonus)
+    public void AddABonus(System.Type bonus)
     {
         switch(bonus.GetType().ToString())
         {
@@ -112,21 +112,22 @@ public class GameManager : Manager<GameManager>
     {
         if(Input.GetButton("Fire1"))
         {
-            foreach(Bonus bonus in m_Bonus)
+            foreach(System.Type bonus in m_Bonus)
             {
-                if(bonus.GetType() == typeof(TrapBonus))
+                if(bonus == typeof(TrapBonus))
                 {
                     EventManager.Instance.Raise(new BonusToBePlacedEvent() { eBonus = bonus });
-                    //m_Bonus.Remove(bonus);
+                    m_Bonus.Remove(bonus);
                     break;
                 }
             }
         }
     }
 
-    public void removeActiveBonus(Bonus bonus)
+    public void removeABonus(System.Type bonus)
     {
         m_Bonus.Remove(bonus);
+        EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_Bonus });
     }
     #endregion
 
@@ -326,7 +327,7 @@ public class GameManager : Manager<GameManager>
         AddABonus(e.bonus);
     }
 
-    private IEnumerator SpeedBonusCoroutine(int increment,float time,Bonus bonus)
+    private IEnumerator SpeedBonusCoroutine(int increment,float time,System.Type bonus)
     {
         m_player.GetComponent<PlayerController>().Speed += increment;
         yield return new WaitForSeconds(time);
@@ -334,7 +335,7 @@ public class GameManager : Manager<GameManager>
         m_Bonus.Remove(bonus);
     }
 
-    private IEnumerator JumpBonusCoroutine(int increment, float time,Bonus bonus)
+    private IEnumerator JumpBonusCoroutine(int increment, float time, System.Type bonus)
     {
         m_player.GetComponent<PlayerController>().Jump += increment;
         yield return new WaitForSeconds(time);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponBonus : Bonus
+public class WeaponBonus : T
 {
 
 }

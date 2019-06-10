@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Bonus : MonoBehaviour
+public abstract class T : MonoBehaviour
 {
-    [SerializeField] public GameObject Prefab;
     Rigidbody rg;
     // Start is called before the first frame update
     protected void Start()
@@ -30,7 +29,7 @@ public abstract class Bonus : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            EventManager.Instance.Raise(new PlayerGetABonus() { bonus = this });
+            EventManager.Instance.Raise(new PlayerGetABonus() { bonus = this.GetType() });
             Destroy(this.gameObject);
         }
     }

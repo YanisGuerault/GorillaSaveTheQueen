@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpeedBonus : Bonus
+public class SpeedBonus : T
 {
     private void Update()
     {

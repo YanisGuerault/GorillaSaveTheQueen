@@ -82,15 +82,13 @@ public class PlayerController : MonoBehaviour
     private void PlaceBonus(BonusToBePlacedEvent e)
     {
         m_animator.SetTrigger("Pickup");
-        StartCoroutine(PlaceObjectCoroutine(e.eBonus.Prefab));
-        Debug.Log(e.eBonus);
-        Debug.Log(e.eBonus.Prefab);
+        StartCoroutine(PlaceObjectCoroutine(TrapBonus.Prefab));
     }
 
     private IEnumerator PlaceObjectCoroutine(GameObject other)
     {
         yield return new WaitForSeconds(1.5f);
-        Instantiate(other, transform.position, Quaternion.Euler(0, 0, 0));
+        Instantiate(other, this.transform.position + new Vector3(0,0.5f,0), Quaternion.Euler(0, 0, 0));
     }
     #endregion
 
@@ -179,7 +177,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator CoroutinePickupObject(float x,GameObject other)
     {
         yield return new WaitForSeconds(x);
-        EventManager.Instance.Raise(new PlayerGetABonus() { bonus = other.GetComponent<Bonus>() });
+        EventManager.Instance.Raise(new PlayerGetABonus() { bonus = other.GetType() });
         Destroy(other);
     }
 
