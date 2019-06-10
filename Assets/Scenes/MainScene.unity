@@ -8598,7 +8598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ca1036ec9d82c4fb86ddb308126d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Prefab: {fileID: 5908253930647374521, guid: 29f25d1237a4a6b40a6b5fabee1e8c57,
+  m_Prefab: {fileID: 5908253930647374521, guid: 592eefc43a4a5244d88f35f456f320a4,
     type: 3}
   m_Bonus: {fileID: 1306000505799395438, guid: a702db79d4ebe4549b1a97d17354c94a, type: 3}
 --- !u!1 &1986236097 stripped
