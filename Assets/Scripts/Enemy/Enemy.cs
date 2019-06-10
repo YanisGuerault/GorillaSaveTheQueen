@@ -12,7 +12,7 @@ public class Enemy : MonoBehaviour
     private bool m_hit = false;
     private Transform m_Ground;
     private List<Collider> m_collisions = new List<Collider>();
-
+    private bool dead = false;
 
     public void SubscribeEvents()
     {
@@ -44,10 +44,11 @@ public class Enemy : MonoBehaviour
         float angleVision = Vector3.SignedAngle(m_player.position - transform.position, transform.forward, Vector3.up);
         float distanceWithPlayer = Vector3.Distance(this.transform.position, m_player.position);
         //Debug.Log("Distance : " + distanceWithPlayer + " angle : "+angleVision);
-        if ((angleVision < 70 && angleVision > -70 && distanceWithPlayer < 15) 
+        //Debug.Log("Dead : " + dead);
+        if (!dead && (angleVision < 70 && angleVision > -70 && distanceWithPlayer < 15) 
             || ((angleVision > 70 && angleVision < 180) || (angleVision < -70 && angleVision > -180) && distanceWithPlayer < 5))
         {
-            if (!m_anim.GetCurrentAnimatorStateInfo(0).IsName("zombie_attack"))
+            if (m_nav != null && !m_anim.GetCurrentAnimatorStateInfo(0).IsName("zombie_attack"))
             {
                 m_nav.SetDestination(m_player.position);
             }
@@ -77,7 +78,7 @@ public class Enemy : MonoBehaviour
     private void OnCollisionStay(Collision collision)
     {
         /*Debug.Log("Player : " + collision.gameObject.CompareTag("Player") + " hit : " + hit + " Anim name : " + anim.GetCurrentAnimatorStateInfo(0).IsName("zombie_attack") + "time : " + GetCurrentAnimatorTime(anim));*/
-        if (collision.gameObject.CompareTag("Player") && !m_hit && m_anim.GetCurrentAnimatorStateInfo(0).IsName("zombie_attack") && GetCurrentAnimatorTime(m_anim) > 0.3)
+        if (!dead && collision.gameObject.CompareTag("Player") && !m_hit && m_anim.GetCurrentAnimatorStateInfo(0).IsName("zombie_attack") && GetCurrentAnimatorTime(m_anim) > 0.3)
         {
             EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
             m_hit = true;
@@ -152,8 +153,17 @@ public class Enemy : MonoBehaviour
     {
         if(e.eEnemy == this)
         {
-            m_anim.SetTrigger("Dead");
+            StartCoroutine(CoroutineDead());
         }
+    }
+
+    private IEnumerator CoroutineDead()
+    {
+        yield return new WaitForSeconds(0.5f);
+        m_anim.SetTrigger("Dead");
+        dead = true;
+        Destroy(this.GetComponent<NavMeshAgent>());
+        Destroy(this.GetComponent<CapsuleCollider>());
     }
 
     #endregion

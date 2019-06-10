@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrapBonus : T
+public class TrapBonus : Bonus
 {
     private bool m_collect = false;
     private bool m_activated = false;
@@ -30,6 +30,7 @@ public class TrapBonus : T
 
         if (m_started && !m_activated && !m_collect)
         {
+            Debug.Log(m_activated);
             if (other.gameObject.CompareTag("Enemy"))
             {
                 m_activated = true;

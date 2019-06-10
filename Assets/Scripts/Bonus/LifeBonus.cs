@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LifeBonus : T
+public class LifeBonus : Bonus
 {
 }

@@ -17,7 +17,7 @@ public class CaseBonus : MonoBehaviour
             {
                 if(child.name == "BonusSpawnPoint")
                 {
-                    T bonus = Instantiate(m_Bonus,child.position,m_Bonus.transform.rotation).GetComponent<T>();
+                    Bonus bonus = Instantiate(m_Bonus,child.position,m_Bonus.transform.rotation).GetComponent<Bonus>();
                     if(bonus.GetType() == typeof(TrapBonus))
                     {
                         TrapBonus bonus2 = (TrapBonus)bonus;

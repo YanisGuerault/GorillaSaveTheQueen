@@ -28,7 +28,7 @@ public class LevelManager : Manager<LevelManager>
 
     private void Reset()
     {
-        Start();
+        EventManager.Instance.Raise(new SettingCurrentLevelEvent() { eLevel = m_CurrentLevel });
     }
 
     protected override IEnumerator InitCoroutine()
@@ -64,6 +64,8 @@ public class LevelManager : Manager<LevelManager>
     public void GoToNextLevel(GoToNextLevelEvent e)
     {
         m_CurrentLevelIndex++;
+        Debug.Log(m_CurrentLevelIndex);
+        Debug.Log(m_LevelsPrefabs.Length);
         if (m_CurrentLevelIndex >= m_LevelsPrefabs.Length)
         {
             EventManager.Instance.Raise(new GameVictoryEvent());

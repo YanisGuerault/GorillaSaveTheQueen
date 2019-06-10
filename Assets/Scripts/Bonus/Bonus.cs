@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class T : MonoBehaviour
+public abstract class Bonus : MonoBehaviour
 {
     Rigidbody rg;
     // Start is called before the first frame update

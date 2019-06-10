@@ -90,7 +90,7 @@ public class GameManager : Manager<GameManager>
 
     public void AddABonus(System.Type bonus)
     {
-        switch(bonus.GetType().ToString())
+        switch(bonus.ToString())
         {
             case "LifeBonus":
                 IncrementNLives(1);
