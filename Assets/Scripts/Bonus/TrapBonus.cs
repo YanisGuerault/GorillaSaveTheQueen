@@ -10,8 +10,9 @@ public class TrapBonus : Bonus
     private bool m_started = false;
     Animator m_anim;
     public static GameObject Prefab;
+    public List<GameObject> onTriggerObject = new List<GameObject>();
 
-    public bool Collect { set { m_collect = value; } }
+    public bool Collect { get { return m_collect; } set { m_collect = value; } }
 
     protected void Start()
     {
@@ -22,32 +23,49 @@ public class TrapBonus : Bonus
     }
     private void OnTriggerEnter(Collider other)
     {
+        onTriggerObject.Add(other.gameObject);
+        VerifAndHit(other);
+
         if (m_collect && other.gameObject.CompareTag("Player"))
         {
-            m_collect = false;
+            //m_collect = false;
             EventManager.Instance.Raise(new PlayerGetABonus() { bonus = this.GetType() });
             Destroy(this.gameObject);
         }
-
-        if (m_started && !m_activated && !m_collect && (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Player")))
-        {
-            m_activated = true;
-            m_anim.SetTrigger("Activated");
-            if (other.gameObject.CompareTag("Enemy"))
-            {
-                EventManager.Instance.Raise(new EnemyHasBeenDestroyEvent() { eEnemy = other.gameObject.GetComponent<Enemy>() });
-            }
-            else if (other.gameObject.CompareTag("Player"))
-            {
-                EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
-            }
-        }
-
     }
 
     private void OnTriggerStay(Collider other)
     {
-        OnTriggerEnter(other);
+        VerifAndHit(other);
+    }
+
+    void VerifAndHit(Collider other)
+    {
+
+        if (!m_collect && m_started && !m_activated && (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Player")))
+        {
+            m_activated = true;
+            m_anim.SetTrigger("Activated");
+            foreach (GameObject obj in onTriggerObject)
+            {
+                Debug.Log("Ontrigger " + obj);
+                if (obj.CompareTag("Enemy"))
+                {
+                    EventManager.Instance.Raise(new EnemyHasBeenDestroyEvent() { eEnemy = obj.GetComponent<Enemy>() });
+                }
+                else if (obj.CompareTag("Player"))
+                {
+                    Debug.Log("Hit" + m_collect);
+                    EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
+                }
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log("Exit "+other.gameObject);
+        onTriggerObject.Remove(other.gameObject);
     }
 
     protected IEnumerator StartCoroutine()

@@ -91,10 +91,12 @@ public class GameManager : Manager<GameManager>
 
     public void AddABonus(System.Type bonus)
     {
-        switch(bonus.ToString())
+        m_Bonus.Add(bonus);
+        switch (bonus.ToString())
         {
             case "LifeBonus":
                 IncrementNLives(1);
+                removeABonus(bonus);
                 break;
             case "SpeedBonus":
                 StartCoroutine(SpeedBonusCoroutine(5,10f,bonus));
@@ -108,7 +110,6 @@ public class GameManager : Manager<GameManager>
                 StartCoroutine(InvulnerabilityBonusCoroutine(10f, bonus));
                 break;
         }
-        m_Bonus.Add(bonus);
         EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_Bonus });
     }
 

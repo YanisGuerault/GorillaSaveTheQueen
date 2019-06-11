@@ -13,11 +13,12 @@ using SDD.Events;
 
         [SerializeField] private Text m_TxtScore;
         [SerializeField] private Text m_TxtNLives;
+        [SerializeField] private List<GameObject> m_Lives;
 
-        #endregion
+    #endregion
 
-        #region Manager implementation
-        protected override IEnumerator InitCoroutine()
+    #region Manager implementation
+    protected override IEnumerator InitCoroutine()
 		{
 			yield break;
 		}
@@ -36,7 +37,12 @@ using SDD.Events;
         }
             m_TxtNLives.text = e.eNLives.ToString();
 
-		}
-		#endregion
+        foreach(GameObject objet in m_Lives)
+        {
+            objet.SetActive(objet.GetComponent<Lives>().lives <= e.eNLives);
+        }
 
-	}
+		}
+    #endregion
+
+}

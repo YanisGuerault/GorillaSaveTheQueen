@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
     private List<Collider> m_collisions = new List<Collider>();
     private bool dead = false;
 
+    #region Events
     public void SubscribeEvents()
     {
         EventManager.Instance.AddListener<EnemyHasBeenDestroyEvent>(EnemyHasBeenDestroy);
@@ -36,8 +37,9 @@ public class Enemy : MonoBehaviour
     {
         UnsubscribeEvents();
     }
+    #endregion
 
-    #region Follow player if see him
+    #region Following Player and Death
     private void Update()
     {
         m_player = GameObject.FindGameObjectWithTag("Player").transform;
