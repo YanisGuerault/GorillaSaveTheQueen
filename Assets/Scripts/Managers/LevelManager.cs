@@ -18,7 +18,7 @@ public class LevelManager : Manager<LevelManager>
     #region Manager implementation
     private void Start()
     {
-        if(m_LevelsPrefabs[0] != null)
+        if(m_CurrentLevel == null && m_LevelsPrefabs[0] != null)
         {
             m_CurrentLevelIndex = 0;
             m_CurrentLevel = m_LevelsPrefabs[0].GetComponent<Level>();

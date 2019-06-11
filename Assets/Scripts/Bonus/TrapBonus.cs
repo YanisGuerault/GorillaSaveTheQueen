@@ -48,23 +48,13 @@ public class TrapBonus : Bonus
             m_anim.SetTrigger("Activated");
             foreach (GameObject obj in onTriggerObject)
             {
-                Debug.Log("Ontrigger " + obj);
-                if (obj.CompareTag("Enemy"))
-                {
-                    EventManager.Instance.Raise(new EnemyHasBeenDestroyEvent() { eEnemy = obj.GetComponent<Enemy>() });
-                }
-                else if (obj.CompareTag("Player"))
-                {
-                    Debug.Log("Hit" + m_collect);
-                    EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
-                }
+                StartCoroutine(HitCoroutine(obj));
             }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("Exit "+other.gameObject);
         onTriggerObject.Remove(other.gameObject);
     }
 
@@ -72,5 +62,18 @@ public class TrapBonus : Bonus
     {
         yield return new WaitForSeconds(2);
         m_started = true;
+    }
+
+    protected IEnumerator HitCoroutine(GameObject obj)
+    {
+        yield return new WaitForSeconds(1f);
+        if (obj.CompareTag("Enemy"))
+        {
+            EventManager.Instance.Raise(new EnemyHasBeenDestroyEvent() { eEnemy = obj.GetComponent<Enemy>() });
+        }
+        else if (obj.CompareTag("Player"))
+        {
+            EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
+        }
     }
 }

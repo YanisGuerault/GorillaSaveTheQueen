@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using SDD.Events;
 using System.Linq;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public enum GameState { gameMenu, gamePlay, gameNextLevel, gamePause, gameOver, gameVictory }
 
@@ -404,5 +406,24 @@ public class GameManager : Manager<GameManager>
         m_cameraController.setTarget(m_player.transform);
     }
     #endregion
+
+    /*protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        PlayerPrefs.SetFloat("Spawn_Point_Ref", m_currentLevel.spawn_point.position.x);
+        Debug.Log(LocalCopyOfData);
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream saveFile = File.Open("Saves/save.binary", FileMode.Open);
+
+        m_currentLevel = (Level)formatter.Deserialize(saveFile);
+
+        saveFile.Close();
+        Debug.Log("Level " + m_currentLevel);
+    }*/
 }
 

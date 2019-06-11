@@ -35,7 +35,6 @@ using SDD.Events;
         {
             m_TxtScore.text = "null";
         }
-            m_TxtNLives.text = e.eNLives.ToString();
 
         foreach(GameObject objet in m_Lives)
         {
