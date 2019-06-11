@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using SDD.Events;
 using System.Linq;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public enum GameState { gameMenu, gamePlay, gameNextLevel, gamePause, gameOver, gameVictory }
 
@@ -91,10 +93,12 @@ public class GameManager : Manager<GameManager>
 
     public void AddABonus(System.Type bonus)
     {
-        switch(bonus.ToString())
+        m_Bonus.Add(bonus);
+        switch (bonus.ToString())
         {
             case "LifeBonus":
                 IncrementNLives(1);
+                removeABonus(bonus);
                 break;
             case "SpeedBonus":
                 StartCoroutine(SpeedBonusCoroutine(5,10f,bonus));
@@ -108,7 +112,6 @@ public class GameManager : Manager<GameManager>
                 StartCoroutine(InvulnerabilityBonusCoroutine(10f, bonus));
                 break;
         }
-        m_Bonus.Add(bonus);
         EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_Bonus });
     }
 
@@ -403,5 +406,24 @@ public class GameManager : Manager<GameManager>
         m_cameraController.setTarget(m_player.transform);
     }
     #endregion
+
+    /*protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        PlayerPrefs.SetFloat("Spawn_Point_Ref", m_currentLevel.spawn_point.position.x);
+        Debug.Log(LocalCopyOfData);
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream saveFile = File.Open("Saves/save.binary", FileMode.Open);
+
+        m_currentLevel = (Level)formatter.Deserialize(saveFile);
+
+        saveFile.Close();
+        Debug.Log("Level " + m_currentLevel);
+    }*/
 }
 

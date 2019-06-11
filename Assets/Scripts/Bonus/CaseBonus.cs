@@ -20,7 +20,7 @@ public class CaseBonus : MonoBehaviour
                     Bonus bonus = Instantiate(m_Bonus,child.position,m_Bonus.transform.rotation).GetComponent<Bonus>();
                     if(bonus.GetType() == typeof(TrapBonus))
                     {
-                        TrapBonus bonus2 = (TrapBonus)bonus;
+                        TrapBonus bonus2 = bonus.GetComponent<TrapBonus>();
                         bonus2.Collect = true;
                         bonus2.GetComponent<Rigidbody>().isKinematic = false;
                     }

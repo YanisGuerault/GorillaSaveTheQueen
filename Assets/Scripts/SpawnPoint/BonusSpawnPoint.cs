@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BonusSpawnPoint : SpawnPoint
 {
-    [SerializeField] GameObject m_Bonus;
+    [SerializeField] public GameObject m_Bonus;
     // Start is called before the first frame update
     void Start()
     {

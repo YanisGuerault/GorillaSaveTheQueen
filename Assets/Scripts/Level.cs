@@ -4,6 +4,7 @@ using UnityEngine;
 using SDD.Events;
 using System;
 using System.Linq;
+using UnityEngine.AI;
 
 public class Level : MonoBehaviour, IEventHandler
 {
@@ -68,7 +69,8 @@ public class Level : MonoBehaviour, IEventHandler
             {
                 foreach (EnemySpawnPoint en in m_enemiesSpawnPoint)
                 {
-                    Instantiate(en.Prefab, en.transform.position, Quaternion.Euler(0, 90, 0));
+                    GameObject newEnemy = Instantiate(en.Prefab, en.transform.position, Quaternion.Euler(0, 90, 0));
+                    newEnemy.GetComponent<NavMeshAgent>().speed = en.Speed;
                 }
             }
 
@@ -76,7 +78,8 @@ public class Level : MonoBehaviour, IEventHandler
             {
                 foreach (BonusSpawnPoint en in m_bonusSpawnPoint)
                 {
-                    Instantiate(en.Prefab, en.transform.position, Quaternion.Euler(0, 0, 0));
+                    GameObject newBonus = Instantiate(en.Prefab, en.transform.position, Quaternion.Euler(0, 0, 0));
+                    newBonus.GetComponent<CaseBonus>().m_Bonus = en.m_Bonus;
                 }
             }
 
