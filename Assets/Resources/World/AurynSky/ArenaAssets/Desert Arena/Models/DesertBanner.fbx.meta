@@ -1,7 +1,7 @@
 fileFormatVersion: 2
-guid: f5d62ac98096bf44c8010ca8a81b671d
+guid: 6457e582904c90046bc6d32e54871218
 ModelImporter:
-  serializedVersion: 22
+  serializedVersion: 23
   fileIDToRecycleName:
     100000: Bone
     100002: Bone.001
@@ -26,7 +26,7 @@ ModelImporter:
     7400004: DesertBanner|Armature|Armature|ArmatureAction|Armature|ArmatureAction
     7400006: DesertBanner|Armature|Armature|ArmatureAction|Armature|ArmatureAction.001
     7400008: DesertBanner|FlagArm|FlagArm|ArmatureAction|FlagArm|ArmatureAction
-    7400010: BannerWave
+    7400010: DesertBanner|FlagArm|FlagArm|ArmatureAction|FlagArm|ArmatureAction.001
     9500000: //RootNode
     13700000: DesertBannerMain
     2186277476908879412: ImportLogs
@@ -57,41 +57,14 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: BannerWave
-      takeName: DesertBanner|FlagArm|FlagArm|ArmatureAction|FlagArm|ArmatureAction.001
-      firstFrame: 0
-      lastFrame: 12
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -109,11 +82,16 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -128,7 +106,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
