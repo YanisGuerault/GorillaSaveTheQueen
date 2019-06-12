@@ -89,6 +89,11 @@ public class PlayerGetABonus: SDD.Events.Event
 {
     public System.Type bonus;
 }
+
+public class ActiveMovingEvent : SDD.Events.Event
+{
+    public bool Active;
+}
 #endregion
 
 #region Levels Manager Event

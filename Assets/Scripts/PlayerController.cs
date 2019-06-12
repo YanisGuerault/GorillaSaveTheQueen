@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
     private bool m_isGrounded;
     private Transform m_Ground;
 
+    [SerializeField] private bool canMove = false;
+
     private List<Collider> m_collisions = new List<Collider>();
 
     private void Start()
@@ -58,12 +60,14 @@ public class PlayerController : MonoBehaviour
     #region Events Subscriptions
     public void SubscribeEvents()
     {
+        EventManager.Instance.AddListener<ActiveMovingEvent>(ActiveMoving);
         EventManager.Instance.AddListener<BonusToBePlacedEvent>(PlaceBonus);
     }
 
     public void UnsubscribeEvents()
     {
         EventManager.Instance.RemoveListener<BonusToBePlacedEvent>(PlaceBonus);
+        EventManager.Instance.RemoveListener<ActiveMovingEvent>(ActiveMoving);
     }
 
     private void OnDestroy()
@@ -73,6 +77,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        canMove = false;
         SubscribeEvents();
     }
     #endregion
@@ -92,6 +97,12 @@ public class PlayerController : MonoBehaviour
         Instantiate(other, this.transform.position + new Vector3(0,0.5f,0), Quaternion.Euler(0, 0, 0));
     }
     #endregion
+
+    private void ActiveMoving(ActiveMovingEvent e)
+    {
+        Debug.Log(e.Active);
+        canMove = e.Active;
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -186,27 +197,30 @@ public class PlayerController : MonoBehaviour
     {
         m_animator.SetBool("Grounded", m_isGrounded);
 
-        switch (m_controlMode)
+        if (canMove)
         {
-            case ControlMode.Direct:
-                DirectUpdate();
-                break;
+            switch (m_controlMode)
+            {
+                case ControlMode.Direct:
+                    DirectUpdate();
+                    break;
 
-            case ControlMode.Tank:
-                TankUpdate();
-                break;
+                case ControlMode.Tank:
+                    TankUpdate();
+                    break;
 
-            case ControlMode.TwoDUp:
-                TwoDUpdate(Vector3.forward);
-                break;
+                case ControlMode.TwoDUp:
+                    TwoDUpdate(Vector3.forward);
+                    break;
 
-            case ControlMode.TwoDLeft:
-                TwoDUpdate(Vector3.left);
-                break;
+                case ControlMode.TwoDLeft:
+                    TwoDUpdate(Vector3.left);
+                    break;
 
-            default:
-                Debug.LogError("Unsupported state");
-                break;
+                default:
+                    Debug.LogError("Unsupported state");
+                    break;
+            }
         }
 
         m_wasGrounded = m_isGrounded;

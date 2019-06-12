@@ -267,6 +267,7 @@ public class GameManager : Manager<GameManager>
         private void NextLevelButtonClicked(NextLevelButtonClickedEvent e)
         {
             EventManager.Instance.Raise(new GoToNextLevelEvent());
+            EventManager.Instance.Raise(new ActiveMovingEvent { Active = true });
         }
     #endregion
 
@@ -281,6 +282,7 @@ public class GameManager : Manager<GameManager>
 			m_GameState = GameState.gameMenu;
 			if(MusicLoopsManager.Instance)MusicLoopsManager.Instance.PlayMusic(Constants.MENU_MUSIC);
 			EventManager.Instance.Raise(new GameMenuEvent());
+            EventManager.Instance.Raise(new ActiveMovingEvent { Active = false });
         }
 
 		private void Play()
@@ -292,7 +294,8 @@ public class GameManager : Manager<GameManager>
 
 		    if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(Constants.LEVEL_1_MUSIC);
 			EventManager.Instance.Raise(new GamePlayEvent());
-		}
+            EventManager.Instance.Raise(new ActiveMovingEvent { Active = true });
+        }
 
 		private void Pause()
 		{
@@ -301,7 +304,8 @@ public class GameManager : Manager<GameManager>
 			SetTimeScale(0);
 			m_GameState = GameState.gamePause;
 			EventManager.Instance.Raise(new GamePauseEvent());
-		}
+            EventManager.Instance.Raise(new ActiveMovingEvent { Active = false });
+        }
 
 		private void Resume()
 		{
@@ -309,21 +313,24 @@ public class GameManager : Manager<GameManager>
 
 			SetTimeScale(1);
 			m_GameState = GameState.gamePlay;
-			EventManager.Instance.Raise(new GameResumeEvent());
-		}
+            EventManager.Instance.Raise(new GameResumeEvent());
+            EventManager.Instance.Raise(new ActiveMovingEvent { Active = true });
+        }
 
 		private void Over()
 		{
 			SetTimeScale(0);
 			m_GameState = GameState.gameOver;
 			EventManager.Instance.Raise(new GameOverEvent());
-			if(SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.GAMEOVER_SFX);
-		}
+            if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.GAMEOVER_SFX);
+            EventManager.Instance.Raise(new ActiveMovingEvent { Active = false });
+        }
 
         private void Win()
         {
             m_GameState = GameState.gameVictory;
-        if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(Constants.MENU_MUSIC);
+            if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(Constants.MENU_MUSIC);
+            EventManager.Instance.Raise(new ActiveMovingEvent { Active = false });
         }
     #endregion
 
@@ -394,6 +401,7 @@ public class GameManager : Manager<GameManager>
         else
         {
             EventManager.Instance.Raise(new AskToGoToNextLevelEvent());
+            EventManager.Instance.Raise(new ActiveMovingEvent { Active = false });
         }
     }
     #endregion
