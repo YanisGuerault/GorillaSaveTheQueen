@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3077,12 +3077,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 191128637}
   m_Mesh: {fileID: 4302850, guid: df55f6f2f7afd3d41bcc765458ee7a43, type: 3}
---- !u!4 &195327583 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4750358145517460666, guid: 267a34ee5bd114645a509ee6b7c61bb7,
-    type: 3}
-  m_PrefabInstance: {fileID: 4750358145780074254}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &195777923
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10608,6 +10602,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 638738644}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &641277474 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1343554055240593789, guid: 267a34ee5bd114645a509ee6b7c61bb7,
+    type: 3}
+  m_PrefabInstance: {fileID: 4750358145780074254}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &642348760
 GameObject:
   m_ObjectHideFlags: 0
@@ -22841,7 +22841,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1028285169}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.17, y: -94.9, z: 20}
+  m_LocalPosition: {x: 2.17, y: -96.2, z: -18.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 228476854}
@@ -28337,6 +28337,31 @@ PrefabInstance:
       propertyPath: m_LevelsPrefabs.Array.data[1]
       value: 
       objectReference: {fileID: 1653785396}
+    - target: {fileID: 114746243097493696, guid: 68480a01e4a00ab45b3d746ae2fc86ee,
+        type: 3}
+      propertyPath: m_Clips.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114746243097493696, guid: 68480a01e4a00ab45b3d746ae2fc86ee,
+        type: 3}
+      propertyPath: m_Clips.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: 56afb17b608eddc45b21d47da9bcc33e, type: 3}
+    - target: {fileID: 114746243097493696, guid: 68480a01e4a00ab45b3d746ae2fc86ee,
+        type: 3}
+      propertyPath: m_Clips.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: 38af27b6108408d44bd46d8f4d53f84e, type: 3}
+    - target: {fileID: 114746243097493696, guid: 68480a01e4a00ab45b3d746ae2fc86ee,
+        type: 3}
+      propertyPath: m_Clips.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: df9a93d47e12dc944818574f610a1893, type: 3}
+    - target: {fileID: 114331011742233390, guid: 68480a01e4a00ab45b3d746ae2fc86ee,
+        type: 3}
+      propertyPath: m_NAudioSources
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114029691621530082, guid: 68480a01e4a00ab45b3d746ae2fc86ee, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 68480a01e4a00ab45b3d746ae2fc86ee, type: 3}
@@ -39249,7 +39274,7 @@ PrefabInstance:
         type: 3}
       propertyPath: spawn_point
       value: 
-      objectReference: {fileID: 195327583}
+      objectReference: {fileID: 641277474}
     - target: {fileID: 4750358145647130458, guid: 267a34ee5bd114645a509ee6b7c61bb7,
         type: 3}
       propertyPath: m_Prefab
@@ -39281,6 +39306,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Convex
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1343554055240593789, guid: 267a34ee5bd114645a509ee6b7c61bb7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -123.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1343554055240593789, guid: 267a34ee5bd114645a509ee6b7c61bb7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.734
+      objectReference: {fileID: 0}
+    - target: {fileID: 1343554055240593789, guid: 267a34ee5bd114645a509ee6b7c61bb7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 22.62
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4750358147191872522, guid: 267a34ee5bd114645a509ee6b7c61bb7, type: 3}
