@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8969,8 +8969,8 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: [{fileID: 114852832577737654, guid: 2d4cc07e22d85374b8d15cd15f4e18e1,
-        type: 3}]
+    m_RemovedComponents:
+    - {fileID: 114852832577737654, guid: 2d4cc07e22d85374b8d15cd15f4e18e1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2d4cc07e22d85374b8d15cd15f4e18e1, type: 3}
 --- !u!1 &532155640
 GameObject:
@@ -28530,7 +28530,7 @@ PrefabInstance:
     - target: {fileID: 114746243097493696, guid: 68480a01e4a00ab45b3d746ae2fc86ee,
         type: 3}
       propertyPath: m_Clips.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 114746243097493696, guid: 68480a01e4a00ab45b3d746ae2fc86ee,
         type: 3}
@@ -28547,6 +28547,11 @@ PrefabInstance:
       propertyPath: m_Clips.Array.data[5]
       value: 
       objectReference: {fileID: 8300000, guid: df9a93d47e12dc944818574f610a1893, type: 3}
+    - target: {fileID: 114746243097493696, guid: 68480a01e4a00ab45b3d746ae2fc86ee,
+        type: 3}
+      propertyPath: m_Clips.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: 25e4b7fb6716be141a940a27629ab969, type: 3}
     - target: {fileID: 114331011742233390, guid: 68480a01e4a00ab45b3d746ae2fc86ee,
         type: 3}
       propertyPath: m_NAudioSources

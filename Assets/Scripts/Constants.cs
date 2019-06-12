@@ -3,11 +3,12 @@
 public static class Constants {
 
 	//Musics
-	public static int MENU_MUSIC = 0;
+	//public static int MENU_MUSIC = 0;
 	public static int GAMEPLAY_MUSIC = 1;
     public static int LEVEL_1_MUSIC = 3;
     public static int LEVEL_2_MUSIC = 4;
     public static int LEVEL_3_MUSIC = 5;
+    public static int MENU_MUSIC = 6;
 
     //Sfx
     public static string GAMEOVER_SFX = "GameOver";
