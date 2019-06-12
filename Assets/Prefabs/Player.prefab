@@ -331,7 +331,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_moveSpeed: 7
   m_turnSpeed: 200
-  m_jumpForce: 15
+  m_jumpForce: 17
   m_doubleJumpActive: 0
   m_animator: {fileID: 4279852446335371958}
   m_rigidBody: {fileID: 4248842990717276758}
