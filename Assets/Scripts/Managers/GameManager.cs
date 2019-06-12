@@ -332,11 +332,11 @@ public class GameManager : Manager<GameManager>
     {
         if (!inverunability)
         {
-            if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.PLAYER_HIT_SFX);
             DecrementNLives(1);
 
             if (m_NLives <= 0)
             {
+                if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.PLAYER_HIT_SFX);
                 Over();
             }
         }

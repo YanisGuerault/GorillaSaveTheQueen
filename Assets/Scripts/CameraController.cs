@@ -21,11 +21,12 @@
         public void setTarget(Transform player)
         {
             m_Target = player;
+            ResetCamera();
         }
 
         void ResetCamera()
 		{
-			m_Transform.position = m_InitPosition;
+            m_InitPosition = m_Transform.position;
 		}
 
         protected override void Awake()
@@ -37,9 +38,9 @@
 
 		void Update()
 		{
-            if (m_Target != null && m_Ground.position.y <= m_Target.position.y)
+            if (m_Target != null && m_Ground.position.y-5 <= m_Target.position.y)
             {
-                transform.position = new Vector3(m_Target.position.x, m_Target.position.y + m_InitPosition.y, m_InitPosition.z);
+                transform.position = new Vector3(m_Target.position.x, m_Target.position.y+8, m_InitPosition.z);
             }
         }
 

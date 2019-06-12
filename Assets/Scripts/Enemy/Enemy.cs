@@ -128,6 +128,7 @@ public class Enemy : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.ZOMBIE_ATTACK_SFX);
             m_anim.SetTrigger("AttackPlayer");
         }
     }
@@ -136,6 +137,7 @@ public class Enemy : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.ZOMBIE_ATTACK_SFX);
             m_anim.SetTrigger("AttackPlayer");
         }
     }
@@ -162,6 +164,7 @@ public class Enemy : MonoBehaviour
     private IEnumerator CoroutineDead()
     {
         yield return new WaitForSeconds(1.25f);
+        if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.ZOMBIE_DEATH_SFX);
         m_anim.SetTrigger("Dead");
         dead = true;
         Destroy(this.GetComponent<NavMeshAgent>());

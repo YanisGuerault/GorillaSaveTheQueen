@@ -236,7 +236,6 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(0, m_currentH * m_turnSpeed * Time.deltaTime, 0);
 
         m_animator.SetFloat("MoveSpeed", m_currentV);
-        SfxManager.Instance.PlaySfx2D(Constants.PLAYER_WALK_SFX);
 
         JumpingAndLanding();
     }
@@ -271,7 +270,6 @@ public class PlayerController : MonoBehaviour
             transform.position += m_currentDirection * m_moveSpeed * Time.deltaTime;
 
             m_animator.SetFloat("MoveSpeed", direction.magnitude);
-            SfxManager.Instance.PlaySfx2D(Constants.PLAYER_WALK_SFX);
         }
 
         JumpingAndLanding();
@@ -305,7 +303,6 @@ public class PlayerController : MonoBehaviour
             transform.position += m_currentDirection * m_moveSpeed * Time.deltaTime;
 
             m_animator.SetFloat("MoveSpeed", direction.magnitude);
-            SfxManager.Instance.PlaySfx2D(Constants.PLAYER_WALK_SFX);
         }
 
         JumpingAndLanding();

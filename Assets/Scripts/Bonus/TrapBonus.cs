@@ -67,6 +67,7 @@ public class TrapBonus : Bonus
     protected IEnumerator HitCoroutine(GameObject obj)
     {
         yield return new WaitForSeconds(1f);
+        //if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.TRAP_CLOSE_SFX);
         if (obj.CompareTag("Enemy"))
         {
             EventManager.Instance.Raise(new EnemyHasBeenDestroyEvent() { eEnemy = obj.GetComponent<Enemy>() });
