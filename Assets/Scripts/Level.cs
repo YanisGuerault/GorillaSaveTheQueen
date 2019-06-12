@@ -48,7 +48,6 @@ public class Level : MonoBehaviour, IEventHandler
     {
         if(e.eLevel == this)
         {
-            Debug.Log(e.eLevel);
             if (m_enemies != null)
             {
                 foreach (GameObject en in m_enemies)
