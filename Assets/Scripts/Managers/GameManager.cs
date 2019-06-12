@@ -112,6 +112,7 @@ public class GameManager : Manager<GameManager>
                 StartCoroutine(InvulnerabilityBonusCoroutine(10f, bonus));
                 break;
         }
+        SfxManager.Instance.PlaySfx2D(Constants.BONUS_SFX);
         EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_Bonus });
     }
 
@@ -289,7 +290,7 @@ public class GameManager : Manager<GameManager>
             EventManager.Instance.Raise(new InstatiateLevelEvent() { eLevel = m_currentLevel });
             m_GameState = GameState.gamePlay;
 
-		    if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(Constants.GAMEPLAY_MUSIC);
+		    if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(Constants.LEVEL_1_MUSIC);
 			EventManager.Instance.Raise(new GamePlayEvent());
 		}
 
@@ -322,7 +323,7 @@ public class GameManager : Manager<GameManager>
         private void Win()
         {
             m_GameState = GameState.gameVictory;
-            //if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.MENU_MUSIC);
+        if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(Constants.MENU_MUSIC);
         }
     #endregion
 
@@ -331,6 +332,7 @@ public class GameManager : Manager<GameManager>
     {
         if (!inverunability)
         {
+            if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.PLAYER_HIT_SFX);
             DecrementNLives(1);
 
             if (m_NLives <= 0)

@@ -4,5 +4,14 @@
 	<SFX name="LetsGo" volume="1" />
 	<SFX name="Tick" volume="1" />  
 	<SFX name="Victory" volume="1" /> 
-	<SFX name="GameOver" volume="1" /> 
+	<SFX name="GameOver" volume="1" />
+  <SFX name="Bonus" volume="1" />
+  <SFX name="player_hit" volume="30" />
+  <SFX name="player_jump" volume="30" />
+  <SFX name="player_trap" volume="30" />
+  <SFX name="player_walk" volume="30" />
+  <SFX name="trap_close" volume="30" />
+  <SFX name="zombie_attack" volume="30" />
+  <SFX name="zombie_death" volume="30" />
+  <SFX name="zombie_walk" volume="30" />
 </SFX_SETUP>
