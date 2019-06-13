@@ -145,6 +145,7 @@ using SDD.Events;
 
         private void AskToGoToNextLevel(AskToGoToNextLevelEvent e)
         {
+        Debug.Log("Oui");
             OpenPanel(m_PanelNextLevel);
         }
 
