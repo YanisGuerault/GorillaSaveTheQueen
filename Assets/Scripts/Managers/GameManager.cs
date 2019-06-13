@@ -93,12 +93,10 @@ public class GameManager : Manager<GameManager>
 
     public void AddABonus(System.Type bonus)
     {
-        m_Bonus.Add(bonus);
         switch (bonus.ToString())
         {
             case "LifeBonus":
                 IncrementNLives(1);
-                removeABonus(bonus);
                 break;
             case "SpeedBonus":
                 StartCoroutine(SpeedBonusCoroutine(5,10f,bonus));
@@ -107,6 +105,7 @@ public class GameManager : Manager<GameManager>
                 StartCoroutine(JumpBonusCoroutine(5, 10f,bonus));
                 break;
             case "TrapBonus":
+                m_Bonus.Add(bonus);
                 break;
             case "InverunabilityBonus":
                 StartCoroutine(InvulnerabilityBonusCoroutine(10f, bonus));
@@ -305,6 +304,7 @@ public class GameManager : Manager<GameManager>
 			m_GameState = GameState.gamePause;
 			EventManager.Instance.Raise(new GamePauseEvent());
             EventManager.Instance.Raise(new ActiveMovingEvent { Active = false });
+            if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(Constants.MENU_MUSIC);
         }
 
 		private void Resume()
