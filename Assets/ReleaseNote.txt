@@ -22,4 +22,4 @@ Repartition du travail :
 Assets : 
 	- Characters : Super Cyan Character Pack Free Sample et Zombie, obtenu sur l'Asset Store, Gratuit
 	- Bonus : Animated Trap, obtenu sur l'Asset Store, Gratuit
-	- World : 
+	- World : AurynSky, MegaPack1Lite, Wild West Western, obtenu sur l'Asset Store, Gratuit
