@@ -332,7 +332,7 @@ public class PlayerController : MonoBehaviour
     {
         bool jumpCooldownOver = (Time.time - m_jumpTimeStamp) >= m_minJumpInterval;
 
-        if (jumpCooldownOver && m_isGrounded && Input.GetKey(KeyCode.Space))
+        if (jumpCooldownOver && m_isGrounded && (Input.GetKey(KeyCode.Space) || Input.GetAxis("Jump") > 0))
         {
             m_jumpTimeStamp = Time.time;
             m_rigidBody.AddForce(Vector3.up * m_jumpForce, ForceMode.Impulse);
@@ -341,7 +341,7 @@ public class PlayerController : MonoBehaviour
             SfxManager.Instance.PlaySfx2D(Constants.PLAYER_JUMP_SFX);
         }
 
-        if (m_doubleJumpActive && !m_isGrounded && Input.GetKey(KeyCode.Space) && jumping == true && double_jumping == false && jumpCooldownOver)
+        if (m_doubleJumpActive && !m_isGrounded && (Input.GetKey(KeyCode.Space) || Input.GetAxis("Jump") > 0) && jumping == true && double_jumping == false && jumpCooldownOver)
         {
             m_jumpTimeStamp = Time.time;
             m_rigidBody.AddForce(Vector3.up * m_jumpForce, ForceMode.Impulse);

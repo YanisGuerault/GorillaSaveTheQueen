@@ -157,18 +157,12 @@ public class Enemy : MonoBehaviour
     {
         if(e.eEnemy == this)
         {
-            StartCoroutine(CoroutineDead());
+            if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.ZOMBIE_DEATH_SFX);
+            m_anim.SetTrigger("Dead");
+            dead = true;
+            Destroy(this.GetComponent<NavMeshAgent>());
+            Destroy(this.GetComponent<CapsuleCollider>());
         }
-    }
-
-    private IEnumerator CoroutineDead()
-    {
-        yield return new WaitForSeconds(1.25f);
-        if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.ZOMBIE_DEATH_SFX);
-        m_anim.SetTrigger("Dead");
-        dead = true;
-        Destroy(this.GetComponent<NavMeshAgent>());
-        Destroy(this.GetComponent<CapsuleCollider>());
     }
 
     #endregion

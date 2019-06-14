@@ -10,21 +10,25 @@ public class CaseBonus : MonoBehaviour
     private bool m_activated = false;
     private void OnCollisionEnter(Collision collision)
     {
-        if(!m_activated && collision.gameObject.CompareTag("Player"))
+        if (!m_activated && collision.contacts.Length > 0 && collision.gameObject.CompareTag("Player"))
         {
-            m_activated = true;
-            foreach(Transform child in transform)
+            ContactPoint contact = collision.contacts[0];
+            if (Vector3.Dot(contact.normal, Vector3.up) > 0.5)
             {
-                if(child.name == "BonusSpawnPoint")
+                m_activated = true;
+                foreach (Transform child in transform)
                 {
-                    Bonus bonus = Instantiate(m_Bonus,child.position,m_Bonus.transform.rotation).GetComponent<Bonus>();
-                    if(bonus.GetType() == typeof(TrapBonus))
+                    if (child.name == "BonusSpawnPoint")
                     {
-                        TrapBonus bonus2 = bonus.GetComponent<TrapBonus>();
-                        bonus2.Collect = true;
-                        bonus2.GetComponent<Rigidbody>().isKinematic = false;
+                        Bonus bonus = Instantiate(m_Bonus, child.position, m_Bonus.transform.rotation).GetComponent<Bonus>();
+                        if (bonus.GetType() == typeof(TrapBonus))
+                        {
+                            TrapBonus bonus2 = bonus.GetComponent<TrapBonus>();
+                            bonus2.Collect = true;
+                            bonus2.GetComponent<Rigidbody>().isKinematic = false;
+                        }
+                        GetComponent<Renderer>().material = m_texture;
                     }
-                    GetComponent<Renderer>().material = m_texture;
                 }
             }
             
