@@ -53,6 +53,15 @@ public class MainMenuButtonClickedEvent : SDD.Events.Event
 public class QuitButtonClickedEvent : SDD.Events.Event
 {
 }
+
+public class DifficultButtonClickedEvent : SDD.Events.Event
+{
+}
+
+public class SetDifficultyEvent : SDD.Events.Event
+{
+    public int eDifficulty;
+}
 #endregion
 
 #region Score Event

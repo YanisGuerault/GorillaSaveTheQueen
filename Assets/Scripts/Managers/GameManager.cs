@@ -115,9 +115,9 @@ public class GameManager : Manager<GameManager>
         EventManager.Instance.Raise(new GameStatisticsChangedEvent() { eBestScore = BestScore, eScore = m_Score, eNLives = m_NLives, eBonus = m_Bonus });
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if(Input.GetButton("Fire1"))
+        if(Input.GetButtonDown("Fire1"))
         {
             bool use = false;
             foreach(System.Type bonus in m_Bonus)
@@ -291,7 +291,7 @@ public class GameManager : Manager<GameManager>
             EventManager.Instance.Raise(new InstatiateLevelEvent() { eLevel = m_currentLevel });
             m_GameState = GameState.gamePlay;
 
-		    if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(Constants.LEVEL_1_MUSIC);
+		    if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(m_currentLevel.Level_Music);
 			EventManager.Instance.Raise(new GamePlayEvent());
             EventManager.Instance.Raise(new ActiveMovingEvent { Active = true });
         }
@@ -315,6 +315,7 @@ public class GameManager : Manager<GameManager>
 			m_GameState = GameState.gamePlay;
             EventManager.Instance.Raise(new GameResumeEvent());
             EventManager.Instance.Raise(new ActiveMovingEvent { Active = true });
+            if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(m_currentLevel.Level_Music);
         }
 
 		private void Over()
@@ -324,6 +325,7 @@ public class GameManager : Manager<GameManager>
 			EventManager.Instance.Raise(new GameOverEvent());
             if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.GAMEOVER_SFX);
             EventManager.Instance.Raise(new ActiveMovingEvent { Active = false });
+            m_Bonus.Clear();
         }
 
         private void Win()
@@ -414,6 +416,7 @@ public class GameManager : Manager<GameManager>
         m_player = Instantiate(m_prefabPlayer, m_currentLevel.spawn_point.position, Quaternion.Euler(0, -90, 0));
         m_player.transform.position = m_currentLevel.spawn_point.position;
         m_cameraController.setTarget(m_player.transform);
+        if (MusicLoopsManager.Instance && m_GameState == GameState.gamePlay) MusicLoopsManager.Instance.PlayMusic(m_currentLevel.Level_Music);
     }
     #endregion
 

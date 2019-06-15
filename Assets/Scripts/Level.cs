@@ -8,7 +8,9 @@ using UnityEngine.AI;
 
 public class Level : MonoBehaviour, IEventHandler
 {
+    #region Variables
     [SerializeField] public Transform spawn_point;
+    [SerializeField] public int Level_Music;
 
     private GameObject[] m_enemies;
     private SpawnPoint[] m_enemiesSpawnPoint;
@@ -18,14 +20,20 @@ public class Level : MonoBehaviour, IEventHandler
 
     public bool IsLast = false;
 
+    [SerializeField] private int m_difficulty = 2;
+    #endregion
+
+    #region Event Listener
     public void SubscribeEvents()
     {
         EventManager.Instance.AddListener<InstatiateLevelEvent>(LevelInstatiate);
+        EventManager.Instance.AddListener<SetDifficultyEvent>(SetDifficulty);
     }
 
     public void UnsubscribeEvents()
     {
         EventManager.Instance.RemoveListener<InstatiateLevelEvent>(LevelInstatiate);
+        EventManager.Instance.RemoveListener<SetDifficultyEvent>(SetDifficulty);
     }
 
     private void OnDestroy()
@@ -37,11 +45,18 @@ public class Level : MonoBehaviour, IEventHandler
     {
         SubscribeEvents();
     }
+    #endregion
 
+#region Level Methods
     private void Start()
     {
         m_enemiesSpawnPoint = GetComponentsInChildren<EnemySpawnPoint>();
         m_bonusSpawnPoint = GetComponentsInChildren<BonusSpawnPoint>();
+    }
+
+    void SetDifficulty(SetDifficultyEvent e)
+    {
+        m_difficulty = e.eDifficulty;
     }
 
     void LevelInstatiate(InstatiateLevelEvent e)
@@ -69,7 +84,18 @@ public class Level : MonoBehaviour, IEventHandler
                 foreach (EnemySpawnPoint en in m_enemiesSpawnPoint)
                 {
                     GameObject newEnemy = Instantiate(en.Prefab, en.transform.position, Quaternion.Euler(0, 90, 0));
-                    newEnemy.GetComponent<NavMeshAgent>().speed = en.Speed;
+                    switch(m_difficulty)
+                    {
+                        case 1:
+                            newEnemy.GetComponent<NavMeshAgent>().speed = 2;
+                            break;
+                        case 2:
+                            newEnemy.GetComponent<NavMeshAgent>().speed = 8;
+                            break;
+                        case 3:
+                            newEnemy.GetComponent<NavMeshAgent>().speed = 14;
+                            break;
+                    }
                 }
             }
 
@@ -87,3 +113,4 @@ public class Level : MonoBehaviour, IEventHandler
         }
     }
 }
+#endregion

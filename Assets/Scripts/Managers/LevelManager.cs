@@ -18,7 +18,7 @@ public class LevelManager : Manager<LevelManager>
     #region Manager implementation
     private void Start()
     {
-        if(m_CurrentLevel == null && m_LevelsPrefabs[0] != null)
+        if(m_LevelsPrefabs[0] != null)
         {
             m_CurrentLevelIndex = 0;
             m_CurrentLevel = m_LevelsPrefabs[0].GetComponent<Level>();
@@ -30,24 +30,6 @@ public class LevelManager : Manager<LevelManager>
     private void Reset()
     {
         EventManager.Instance.Raise(new SettingCurrentLevelEvent() { eLevel = m_CurrentLevel });
-        SwitchMusic();
-    }
-
-    private void SwitchMusic()
-    {
-        switch (m_CurrentLevelIndex + 3)
-        {
-            case 3:
-                if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(Constants.LEVEL_1_MUSIC);
-                break;
-            case 4:
-                if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(Constants.LEVEL_2_MUSIC);
-                break;
-            case 5:
-                if (MusicLoopsManager.Instance) MusicLoopsManager.Instance.PlayMusic(Constants.LEVEL_3_MUSIC);
-                break;
-
-        }
     }
 
     protected override IEnumerator InitCoroutine()
@@ -85,7 +67,6 @@ public class LevelManager : Manager<LevelManager>
     public void GoToNextLevel(GoToNextLevelEvent e)
     {
         m_CurrentLevelIndex++;
-        SwitchMusic();
         if (m_CurrentLevelIndex >= m_LevelsPrefabs.Length)
         {
             EventManager.Instance.Raise(new GameVictoryEvent());

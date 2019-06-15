@@ -7,11 +7,25 @@ Conditions de Victoire : Passer sous l'arche asiataque à la fin du dernier nivea
 Conditions de Défaites : Tomber dans le vide, se faire tuer par un ennemi ou un piège.
 Capacités du Joueur :
 	- De base : Saut
-	- Avec Bonus : Invulnérabilité, possiblité de poser des pièges.
+	- Avec Bonus : Speed, possiblité de poser des pièges.
 
 Limitations :
+- Limitation de temps.
+
 Bugs connus : 
+- Les zombies peuvent ne pas faire de dégats à tous les coups
+- Dans le premier niveau, on voit des trous dans l'arrière plan
+- Les zombies peuvent se déplacer sur 3 dimensions (A cause du NavMesh)
+- Placement des zombies, ils peuvent se bloquer.
+- Les zombies peuvent se bloquer dans du décor et/ou bloquer car il n'y as pas de NavMesh.
+- Si on touche un objet par le coté et qu'on garde la direction, on bloque dessus.
+- La caméra à des difficultés à suivre sur le début du niveau 2, dû au faite que le script du Player n'accepte bien les plateformes.
+
 Voies d'amélioration :
+- Améliorer l'IA des zombies
+- Avoir plus de niveaux.
+- Avoir plus de types d'ennemis.
+- 
 
 Repartition du travail :
 	- Script (Code C#) : Yanis
@@ -23,3 +37,8 @@ Assets :
 	- Characters : Super Cyan Character Pack Free Sample et Zombie, obtenu sur l'Asset Store, Gratuit
 	- Bonus : Animated Trap, obtenu sur l'Asset Store, Gratuit
 	- World : AurynSky, MegaPack1Lite, Wild West Western, obtenu sur l'Asset Store, Gratuit
+
+Audio :
+	- Lost Woods - The Legend of Zelda: Ocarina of Time : forest
+	- Cave Theme (The Legend of Zelda: Breath of the Wild OST) : cave
+	- Gerudo Valley - The Legend of Zelda: Ocarina of Time : desert

@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour
         //Debug.Log("Distance : " + distanceWithPlayer + " angle : "+angleVision);
         //Debug.Log("Dead : " + dead);
         if (!dead && (angleVision < 70 && angleVision > -70 && distanceWithPlayer < 15) 
-            || ((angleVision > 70 && angleVision < 180) || (angleVision < -70 && angleVision > -180) && distanceWithPlayer < 5))
+            || ((angleVision > 70 && angleVision < 180) || (angleVision < -70 && angleVision > -180) && distanceWithPlayer < 8))
         {
             if (m_nav != null && !m_anim.GetCurrentAnimatorStateInfo(0).IsName("zombie_attack"))
             {
@@ -126,16 +126,12 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.ZOMBIE_ATTACK_SFX);
-            m_anim.SetTrigger("AttackPlayer");
-        }
+        OnTriggerStay(other);
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (!dead && other.CompareTag("Player"))
         {
             if (SfxManager.Instance) SfxManager.Instance.PlaySfx2D(Constants.ZOMBIE_ATTACK_SFX);
             m_anim.SetTrigger("AttackPlayer");

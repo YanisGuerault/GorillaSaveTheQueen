@@ -18,6 +18,8 @@ using SDD.Events;
 		[SerializeField] GameObject m_PanelGameOver;
         [SerializeField] GameObject m_PanelWin;
         [SerializeField] GameObject m_PanelNextLevel;
+        [SerializeField] GameObject m_PanelDifficulty;
+        [SerializeField] GameObject m_PanelCredits;
 
     List<GameObject> m_AllPanels;
 		#endregion
@@ -27,13 +29,15 @@ using SDD.Events;
 		{
             EventManager.Instance.AddListener<AskToGoToNextLevelEvent>(AskToGoToNextLevel);
             EventManager.Instance.AddListener<GoToNextLevelEvent>(GoToNextLevel);
-			base.SubscribeEvents();
+            EventManager.Instance.AddListener<DifficultButtonClickedEvent>(DifficultySelect);
+            base.SubscribeEvents();
 		}
 
 		public override void UnsubscribeEvents()
 		{
             EventManager.Instance.RemoveListener<AskToGoToNextLevelEvent>(AskToGoToNextLevel);
             EventManager.Instance.RemoveListener<GoToNextLevelEvent>(GoToNextLevel);
+            EventManager.Instance.RemoveListener<DifficultButtonClickedEvent>(DifficultySelect);
             base.UnsubscribeEvents();
 		}
 		#endregion
@@ -54,7 +58,7 @@ using SDD.Events;
 
 		private void Update()
 		{
-			if (Input.GetButtonDown("Cancel"))
+			if (Input.GetButton("Cancel"))
 			{
 				EscapeButtonHasBeenClicked();
 			}
@@ -70,7 +74,9 @@ using SDD.Events;
 			m_AllPanels.Add(m_PanelGameOver);
             m_AllPanels.Add(m_PanelWin);
             m_AllPanels.Add(m_PanelNextLevel);
-		}
+            m_AllPanels.Add(m_PanelDifficulty);
+            m_AllPanels.Add(m_PanelCredits);
+        }
 
 		void OpenPanel(GameObject panel)
 		{
@@ -97,6 +103,7 @@ using SDD.Events;
 
 		public void MainMenuButtonHasBeenClicked()
 		{
+        Debug.Log("Yes");
 			EventManager.Instance.Raise(new MainMenuButtonClickedEvent());
 		}
 
@@ -108,6 +115,34 @@ using SDD.Events;
         public void NextLevelButtonHasBeenClicked()
         {
             EventManager.Instance.Raise(new NextLevelButtonClickedEvent());
+        }
+
+        public void DifficultyButtonHasBeenClicked()
+        {
+            EventManager.Instance.Raise(new DifficultButtonClickedEvent());
+        }
+
+        public void EasyDifficultyButtonHasBeenClicked()
+        {
+            EventManager.Instance.Raise(new SetDifficultyEvent() { eDifficulty = 1 });
+            OpenPanel(m_PanelMainMenu);
+        }
+
+        public void MediumDifficultyButtonHasBeenClicked()
+        {
+            EventManager.Instance.Raise(new SetDifficultyEvent() { eDifficulty = 2 });
+            OpenPanel(m_PanelMainMenu);
+        }
+
+        public void HardDifficultyButtonHasBeenClicked()
+        {
+            EventManager.Instance.Raise(new SetDifficultyEvent() { eDifficulty = 3 });
+            OpenPanel(m_PanelMainMenu);
+        }
+
+        public void CreditButtonHasBeenClicked()
+        {
+            OpenPanel(m_PanelCredits);
         }
 
     #endregion
@@ -145,13 +180,17 @@ using SDD.Events;
 
         private void AskToGoToNextLevel(AskToGoToNextLevelEvent e)
         {
-        Debug.Log("Oui");
             OpenPanel(m_PanelNextLevel);
         }
 
-    private void GoToNextLevel(GoToNextLevelEvent e)
-    {
-        OpenPanel(null);
-    }
+        private void GoToNextLevel(GoToNextLevelEvent e)
+        {
+            OpenPanel(null);
+        }
+
+        private void DifficultySelect(DifficultButtonClickedEvent e)
+        {
+            OpenPanel(m_PanelDifficulty);
+        }
     #endregion
 }

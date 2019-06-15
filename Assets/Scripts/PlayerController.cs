@@ -5,7 +5,7 @@ using SDD.Events;
 
 public class PlayerController : MonoBehaviour
 {
-
+    #region Variables
     private enum ControlMode
     {
         Tank,
@@ -51,11 +51,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool canMove = false;
 
     private List<Collider> m_collisions = new List<Collider>();
-
-    private void Start()
-    {
-        m_Camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
-    }
+    #endregion
 
     #region Events Subscriptions
     public void SubscribeEvents()
@@ -98,11 +94,7 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    private void ActiveMoving(ActiveMovingEvent e)
-    {
-        Debug.Log(e.Active);
-        canMove = e.Active;
-    }
+    #region OnCollision & OnTrigger Methods
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -155,13 +147,6 @@ public class PlayerController : MonoBehaviour
             }
             if (m_collisions.Count == 0) { m_isGrounded = false; }
         }
-
-        /*bool pickupButton = Input.GetButton("Fire1") ? true : false;
-
-        if (pickupButton && collision.gameObject.GetComponent<Bonus>())
-        {
-            PickupObject(collision.gameObject);
-        }*/
     }
 
     private void OnCollisionExit(Collision collision)
@@ -186,13 +171,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private IEnumerator CoroutinePickupObject(float x,GameObject other)
-    {
-        yield return new WaitForSeconds(x);
-        EventManager.Instance.Raise(new PlayerGetABonus() { bonus = other.GetType() });
-        Destroy(other);
-    }
+    #endregion
 
+    #region OnMoving Methods
     void Update()
     {
         m_animator.SetBool("Grounded", m_isGrounded);
@@ -322,12 +303,9 @@ public class PlayerController : MonoBehaviour
         JumpingAndLanding();
     }
 
-    private void PickupObject(GameObject gameobject)
-    {
-        m_animator.SetTrigger("Pickup");
-        StartCoroutine(CoroutinePickupObject(1.5f, gameobject));
-    }
+    #endregion
 
+    #region Jumping Methods
     private void JumpingAndLanding()
     {
         bool jumpCooldownOver = (Time.time - m_jumpTimeStamp) >= m_minJumpInterval;
@@ -365,5 +343,33 @@ public class PlayerController : MonoBehaviour
             EventManager.Instance.Raise(new PlayerHasBeenHitEvent());
         }
     }
+    #endregion
+
+    #region Others Methods
+
+    private IEnumerator CoroutinePickupObject(float x, GameObject other)
+    {
+        yield return new WaitForSeconds(x);
+        EventManager.Instance.Raise(new PlayerGetABonus() { bonus = other.GetType() });
+        Destroy(other);
+    }
+
+    private void PickupObject(GameObject gameobject)
+    {
+        m_animator.SetTrigger("Pickup");
+        StartCoroutine(CoroutinePickupObject(1.5f, gameobject));
+    }
+
+    private void ActiveMoving(ActiveMovingEvent e)
+    {
+        canMove = e.Active;
+    }
+
+    private void Start()
+    {
+        m_Camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+    }
+
+    #endregion
 
 }
